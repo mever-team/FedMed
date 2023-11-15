@@ -24,20 +24,11 @@ def min(entries):
 
 
 def sum(entries):
-    if len(entries) == 1:
-        return 0
-    ret = 0
-    for val in entries:
-        ret += val
-    return ret
-
-
-def sqsum(entries):
     if len(entries) <= 1:
         return 0
     ret = 0
     for val in entries:
-        ret += val*val
+        ret += val
     return ret
 
 
