@@ -1,0 +1,17 @@
+privacy: 0.1
+methods:
+  max:
+    map: private.max
+    reduce: public.max
+  min:
+    map: private.min
+    reduce: public.min
+  sum:
+    map: private.sum
+    reduce: public.sum
+  sqsum:
+    map: private.sqsum
+    reduce: public.sum
+  len:
+    map: private.num
+    reduce: public.sum
