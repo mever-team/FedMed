@@ -3,6 +3,15 @@ Common operations that obfuscate too few data samples.
 """
 
 
+def unique(entries):
+    if len(entries) <= 1:
+        return None
+    ret = set(entries)
+    if len(ret) == len(entries):
+        return None
+    return list(ret)
+
+
 def max(entries):
     if len(entries) <= 1:
         return None

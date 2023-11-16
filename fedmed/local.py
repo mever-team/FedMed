@@ -85,4 +85,4 @@ class Local:
         if method not in self.config["methods"]:
             return f"Method {method} not supported"
         method = _method(self.config["methods"][method]["map"])
-        return str(method(self.data, **kwargs))
+        return method(self.data, **kwargs)

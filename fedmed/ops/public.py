@@ -5,9 +5,18 @@ Common operations that obfuscate too few data samples.
 
 def reductor(method):
     def wrapped(entries):
-        return method([float(val) for val in entries if val != "None"])
+        return method([val for val in entries if val is not None])
 
     return wrapped
+
+
+def union(entries):
+    if len(entries) <= 0:
+        return None
+    ret = set()
+    for entry in entries:
+        ret = set(list(ret)+list(entry))
+    return ret
 
 
 @reductor

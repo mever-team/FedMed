@@ -70,7 +70,7 @@ class Server:
                 if item not in fragment:
                     return jsonify(f"Item {item} does not exist"), 400
                 fragment = fragment[item]
-            result = str(method(fragment, **kwargs))
+            result = method(fragment, **kwargs)
             return jsonify(result), 200
 
     def __setitem__(self, key, value):

@@ -74,6 +74,6 @@ class Remote:
         payload = {"subpoint": self.subpoint, "kwargs": kwargs}
         response = requests.post(f"{self.ip}/{self.fragment}/{method}", json=payload)
         if response.status_code == 200:
-            return str(response.json())
+            return response.json()
         else:
             return f"Failed to execute {method}. Status code: {response.status_code}"

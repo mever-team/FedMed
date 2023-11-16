@@ -25,3 +25,6 @@ methods:
   len:
     map: fedmed.ops.private.num
     reduce: fedmed.ops.public.sum
+  set:
+    map: fedmed.ops.private.unique
+    reduce: fedmed.ops.public.union

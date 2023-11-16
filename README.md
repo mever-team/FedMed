@@ -66,8 +66,8 @@ import fedmed as fm
 server = fm.Server(config="config.yaml")
 ```
 
-:construction: `fedmed.ops.private` operations are 
-not always exact to maximize privacy.
+:construction: To ensure privacy,
+`fedmed.ops.private` operations are not always exact.
 
 Each server can contain fragments of several datasets.
 Load data as pandas dataframes or combinations
