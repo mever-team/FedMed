@@ -1,8 +1,9 @@
 # FedMed
 
 A privacy-aware federated computing scheme 
-for statistical dataset on data found
-across multiple servers without data access.
+for statistical dataset analysis. Process data
+scattered across multiple privacy-preserving
+servers.
 
 ## Quickstart client
 
@@ -36,7 +37,7 @@ mean = data.sum() / data.len()
 print('Mean', mean)
 ```
 
-:bulb: Control of map operations allows server owners 
+:lock: Control of map operations allows server owners 
 to set their own privacy policies. For example, 
 they may share new internal data compared to 
 old ones only when enough new samples are gathered
@@ -47,7 +48,7 @@ For the above code to run, you need to set up
 some devices to run at the respective ip addresses.
 
 
-## Quickstart server
+##  Set up a server
 
 Data servers host your data for clients to use.
 Custom map operations of the map-reduce scheme
@@ -65,7 +66,7 @@ import fedmed as fm
 server = fm.Server(config="config.yaml")
 ```
 
-:warning: `fedmed.ops.private` operations are 
+:construction: `fedmed.ops.private` operations are 
 not always exact to maximize privacy.
 
 Each server can contain fragments of several datasets.
@@ -89,5 +90,5 @@ if __name__ == "__main__":
     serve(server.app, host="127.0.0.1", port=8000)
 ```
 
-:bulb: Set up a reverse proxy server to ensure
+:globe_with_meridians: Set up a reverse proxy server to ensure
 that not anybody can perform operations on your system.
