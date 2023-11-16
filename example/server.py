@@ -14,4 +14,7 @@ if __name__ == "__main__":
     server["tsla"] = pd.read_csv(
         "https://raw.githubusercontent.com/cs109/2014_data/master/countries.csv"
     )
-    serve(server.app, host="127.0.0.1", port=8000)
+    host = "127.0.0.1"
+    port = 8000
+    print(f"Status overview http://{host}:{port}")
+    serve(server.app, host=host, port=port)

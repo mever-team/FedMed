@@ -25,3 +25,4 @@ sources = [fm.Remote(ip="http://127.0.0.1:8000", fragment="tsla")]
 data = fm.FedData(sources, config="config.yaml")
 print(data["Region"].set())
 print((data["Region"] == "AFRICA").sum())
+print(((data["Region"]=="AFRICA")==1).sum())
