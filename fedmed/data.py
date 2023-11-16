@@ -1,13 +1,12 @@
 import yaml
 import sys
 import importlib
-from fedmed.serialization import serialize
 
 
 class FedData:
     def __init__(self, devices=None, config="config.yaml"):
         if isinstance(config, str):
-            with open(config, 'r') as file:
+            with open(config, "r") as file:
                 self.config = yaml.safe_load(file)
         else:
             self.config = config
@@ -19,28 +18,28 @@ class FedData:
         return FedData([device[item] for device in self.devices], self.config)
 
     def __mul__(self, other):
-        return FedData([device*other for device in self.devices], self.config)
+        return FedData([device * other for device in self.devices], self.config)
 
     def __rmul__(self, other):
-        return FedData([device*other for device in self.devices], self.config)
+        return FedData([device * other for device in self.devices], self.config)
 
     def __add__(self, other):
-        return FedData([device+other for device in self.devices], self.config)
+        return FedData([device + other for device in self.devices], self.config)
 
     def __radd__(self, other):
-        return FedData([other+device for device in self.devices], self.config)
+        return FedData([other + device for device in self.devices], self.config)
 
     def __sub__(self, other):
-        return FedData([device-other for device in self.devices], self.config)
+        return FedData([device - other for device in self.devices], self.config)
 
     def __rsub__(self, other):
-        return FedData([other-device for device in self.devices], self.config)
+        return FedData([other - device for device in self.devices], self.config)
 
     def __pow__(self, other):
-        return FedData([device**other for device in self.devices], self.config)
+        return FedData([device ** other for device in self.devices], self.config)
 
     def __rpow__(self, other):
-        return FedData([other**device for device in self.devices], self.config)
+        return FedData([other ** device for device in self.devices], self.config)
 
     def __eq__(self, other):
         return FedData([device == other for device in self.devices], self.config)
@@ -72,10 +71,9 @@ class FedData:
             request = (request, {})
         method, kwargs = request
         method = self.config["methods"][method]["reduce"]
-        package, method = method.split(".")
+        package, method = method.rsplit(".", 1)
         importlib.__import__(package)
         method = getattr(sys.modules[package], method)
-        request = serialize(request)
         results = [device.run(request) for device in self.devices]
         return method(results)
 
@@ -85,4 +83,5 @@ class FedData:
 
         def method(**kwargs):
             return self.run((item, kwargs))
+
         return method

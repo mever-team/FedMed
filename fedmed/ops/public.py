@@ -3,8 +3,16 @@ Common operations that obfuscate too few data samples.
 """
 
 
+def reductor(method):
+    def wrapped(entries):
+        return method([float(val) for val in entries if val != "None"])
+
+    return wrapped
+
+
+@reductor
 def max(entries):
-    if len(entries) <= 1:
+    if len(entries) <= 0:
         return None
     ret = entries[0]
     for val in entries:
@@ -13,8 +21,9 @@ def max(entries):
     return ret
 
 
+@reductor
 def min(entries):
-    if len(entries) <= 1:
+    if len(entries) <= 0:
         return None
     ret = entries[0]
     for val in entries:
@@ -23,16 +32,9 @@ def min(entries):
     return ret
 
 
+@reductor
 def sum(entries):
-    if len(entries) <= 1:
-        return 0
     ret = 0
     for val in entries:
         ret += val
     return ret
-
-
-def num(entries):
-    if len(entries) <= 1:
-        return 0
-    return len(entries)

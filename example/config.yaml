@@ -1,0 +1,17 @@
+privacy: 0.1
+methods:
+  max:
+    map: fedmed.ops.private.max
+    reduce: fedmed.ops.public.max
+  min:
+    map: fedmed.ops.private.min
+    reduce: fedmed.ops.public.min
+  sum:
+    map: fedmed.ops.private.sum
+    reduce: fedmed.ops.public.sum
+  sqsum:
+    map: fedmed.ops.private.sqsum
+    reduce: fedmed.ops.public.sum
+  len:
+    map: fedmed.ops.private.num
+    reduce: fedmed.ops.public.sum
