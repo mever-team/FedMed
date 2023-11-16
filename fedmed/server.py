@@ -33,6 +33,34 @@ class Server:
                 kwargs = data["kwargs"]
             if method not in self.config["methods"]:
                 return jsonify(f"Method {method} not supported"), 400
+            if "other" in kwargs:
+                fragment1 = self.fragments[fragment]
+                for item in subpoint:
+                    if item not in fragment1:
+                        return jsonify(f"Item {item} does not exist"), 400
+                    fragment1 = fragment1[item]
+                if isinstance(kwargs["other"], list):
+                    fragment2 = self.fragments[fragment]
+                    for item in kwargs["other"]:
+                        if item not in fragment2:
+                            return jsonify(f"Item {item} does not exist"), 400
+                        fragment2 = fragment2[item]
+                    subpoint2_alias = '.'.join(kwargs['other'])
+                else:
+                    fragment2 = kwargs["other"]
+                    subpoint2_alias = fragment2
+                new_name = f"{method}({'.'.join(subpoint)}, {subpoint2_alias})"
+                method = self.config["methods"][method]
+                assert isinstance(method, str)
+                package, method = method.rsplit(".", 1)
+                importlib.__import__(package)
+                method = getattr(sys.modules[package], method)
+                try:
+                    self.fragments[new_name] = method(fragment1, fragment2)
+                except Exception as e:
+                    print(str(e))
+                    return jsonify(str(e)), 400
+                return jsonify(new_name), 200
             fragment = self.fragments[fragment]
             method = self.config["methods"][method]["map"]
             package, method = method.rsplit(".", 1)
@@ -40,7 +68,7 @@ class Server:
             method = getattr(sys.modules[package], method)
             for item in subpoint:
                 if item not in fragment:
-                    return jsonify(f"Item {method} does not exist"), 400
+                    return jsonify(f"Item {item} does not exist"), 400
                 fragment = fragment[item]
             result = str(method(fragment, **kwargs))
             return jsonify(result), 200

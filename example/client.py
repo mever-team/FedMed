@@ -17,4 +17,5 @@ sources = [
     fm.Remote(ip="http://127.0.0.1:8000", fragment="test2"),
 ]
 data = fm.FedData(config="config.yaml").register(sources)
-print(mean(data["dim"]))
+print(abs(data["dim"]).sum())
+#print(std(data["dim"]))

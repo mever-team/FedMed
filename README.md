@@ -90,5 +90,5 @@ if __name__ == "__main__":
     serve(server.app, host="127.0.0.1", port=8000)
 ```
 
-:globe_with_meridians: Set up a reverse proxy server to ensure
-that not anybody can perform operations on your system.
+:globe_with_meridians: Set up a reverse proxy server to restrict
+who can perform operations on your system.

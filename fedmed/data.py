@@ -18,45 +18,73 @@ class FedData:
         return FedData([device[item] for device in self.devices], self.config)
 
     def __mul__(self, other):
+        if isinstance(other, FedData):
+            return FedData([device * o for device, o in zip(self.devices, other.devices)])
         return FedData([device * other for device in self.devices], self.config)
 
     def __rmul__(self, other):
+        if isinstance(other, FedData):
+            return FedData([device * o for device, o in zip(self.devices, other.devices)])
         return FedData([device * other for device in self.devices], self.config)
 
     def __add__(self, other):
+        if isinstance(other, FedData):
+            return FedData([device + o for device, o in zip(self.devices, other.devices)])
         return FedData([device + other for device in self.devices], self.config)
 
     def __radd__(self, other):
+        if isinstance(other, FedData):
+            return FedData([device + o for device, o in zip(self.devices, other.devices)])
         return FedData([other + device for device in self.devices], self.config)
 
     def __sub__(self, other):
+        if isinstance(other, FedData):
+            return FedData([device - o for device, o in zip(self.devices, other.devices)])
         return FedData([device - other for device in self.devices], self.config)
 
     def __rsub__(self, other):
+        if isinstance(other, FedData):
+            return FedData([o - device for device, o in zip(self.devices, other.devices)])
         return FedData([other - device for device in self.devices], self.config)
 
     def __pow__(self, other):
+        if isinstance(other, FedData):
+            return FedData([device ** o for device, o in zip(self.devices, other.devices)])
         return FedData([device ** other for device in self.devices], self.config)
 
     def __rpow__(self, other):
+        if isinstance(other, FedData):
+            return FedData([o ** device for device, o in zip(self.devices, other.devices)])
         return FedData([other ** device for device in self.devices], self.config)
 
     def __eq__(self, other):
+        if isinstance(other, FedData):
+            return FedData([device == o for device, o in zip(self.devices, other.devices)])
         return FedData([device == other for device in self.devices], self.config)
 
     def __ne__(self, other):
+        if isinstance(other, FedData):
+            return FedData([device != o for device, o in zip(self.devices, other.devices)])
         return FedData([device != other for device in self.devices], self.config)
 
     def __lt__(self, other):
+        if isinstance(other, FedData):
+            return FedData([device < o for device, o in zip(self.devices, other.devices)])
         return FedData([device < other for device in self.devices], self.config)
 
     def __le__(self, other):
+        if isinstance(other, FedData):
+            return FedData([device <= o for device, o in zip(self.devices, other.devices)])
         return FedData([device <= other for device in self.devices], self.config)
 
     def __gt__(self, other):
+        if isinstance(other, FedData):
+            return FedData([device > o for device, o in zip(self.devices, other.devices)])
         return FedData([device > other for device in self.devices], self.config)
 
     def __ge__(self, other):
+        if isinstance(other, FedData):
+            return FedData([device >= o for device, o in zip(self.devices, other.devices)])
         return FedData([device >= other for device in self.devices], self.config)
 
     def __abs__(self):
