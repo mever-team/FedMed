@@ -7,22 +7,23 @@ def operator(method):
         if isinstance(b, list):
             return [method(a, be) for be in b]
         return method(a, b)
+
     return wrapper
 
 
 @operator
 def pow(a, b):
-    return a**b
+    return a ** b
 
 
 @operator
 def add(a, b):
-    return a+b
+    return a + b
 
 
 @operator
 def sub(a, b):
-    return a-b
+    return a - b
 
 
 @operator
@@ -56,4 +57,4 @@ def ge(a, b):
 
 
 def abs(a, _):
-    return [ae if ae>0 else -ae for ae in a]
+    return [ae if ae > 0 else -ae for ae in a]

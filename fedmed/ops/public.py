@@ -15,7 +15,7 @@ def union(entries):
         return None
     ret = set()
     for entry in entries:
-        ret = set(list(ret)+list(entry))
+        ret = set(list(ret) + list(entry))
     return ret
 
 

@@ -14,9 +14,7 @@ class Remote:
         method = name
         payload = {
             "subpoint": self.subpoint,
-            "kwargs": {
-                "other": other.subpoint if isinstance(other, Remote) else other
-            },
+            "kwargs": {"other": other.subpoint if isinstance(other, Remote) else other},
         }
         response = requests.post(f"{self.ip}/{self.fragment}/{method}", json=payload)
         if response.status_code == 200:

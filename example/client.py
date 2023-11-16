@@ -1,4 +1,3 @@
-import numpy as np
 import fedmed as fm
 
 
@@ -9,6 +8,7 @@ def mean(data: fm.FedData):
 def std(data: fm.FedData):
     n = data.len()
     return ((data ** 2).sum() / n - (data.sum() / n) ** 2) ** 0.5
+
 
 """
 sources = [
@@ -21,9 +21,7 @@ print(abs(data["dim"]).sum())
 #print(std(data["dim"]))
 """
 
-sources = [
-    fm.Remote(ip="http://127.0.0.1:8000", fragment="tsla")
-]
+sources = [fm.Remote(ip="http://127.0.0.1:8000", fragment="tsla")]
 data = fm.FedData(sources, config="config.yaml")
 print(data["Region"].set())
 print((data["Region"] == "AFRICA").sum())

@@ -45,7 +45,7 @@ class Server:
                         if item not in fragment2:
                             return jsonify(f"Item {item} does not exist"), 400
                         fragment2 = fragment2[item]
-                    subpoint2_alias = '.'.join(kwargs['other'])
+                    subpoint2_alias = ".".join(kwargs["other"])
                 else:
                     fragment2 = kwargs["other"]
                     subpoint2_alias = fragment2

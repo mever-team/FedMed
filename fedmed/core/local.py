@@ -78,7 +78,9 @@ class Local:
         return Local(self.data >= data, self.config)
 
     def __abs__(self):
-        return Local(_method(self.config["methods"]["__abs__"])(self.data, None), self.config)
+        return Local(
+            _method(self.config["methods"]["__abs__"])(self.data, None), self.config
+        )
 
     def run(self, request):
         method, kwargs = request

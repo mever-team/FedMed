@@ -1,5 +1,3 @@
-from fedmed.data import FedData
-from fedmed.local import Local
-from fedmed.remote import Remote
-from fedmed.server import Server
+from fedmed.core import *
+from fedmed import stats
 from fedmed import ops

@@ -11,5 +11,7 @@ server = Server(config="config.yaml")
 if __name__ == "__main__":
     server["test1"] = {"dim": [1]}
     server["test2"] = {"dim": [2, 3]}
-    server["tsla"] = pd.read_csv('https://raw.githubusercontent.com/cs109/2014_data/master/countries.csv')
+    server["tsla"] = pd.read_csv(
+        "https://raw.githubusercontent.com/cs109/2014_data/master/countries.csv"
+    )
     serve(server.app, host="127.0.0.1", port=8000)
