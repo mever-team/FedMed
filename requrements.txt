@@ -3,3 +3,4 @@ pyyaml
 flask
 waitress
 matplotlib
+psutil

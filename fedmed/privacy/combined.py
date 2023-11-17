@@ -25,3 +25,7 @@ class CombinedPolicy:
         for policy in self.policies:
             result = policy.postprocess(result)
         return result
+
+    def acknowledge(self, server, fragment):
+        for policy in self.policies:
+            policy.acknowledge(server, fragment)

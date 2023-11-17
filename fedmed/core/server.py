@@ -4,6 +4,8 @@ import sys
 import importlib
 from fedmed.core import templates
 from fedmed.privacy import CombinedPolicy
+import threading
+import psutil
 
 
 class Server:
@@ -18,13 +20,14 @@ class Server:
             return "JSON"
         return value.__class__.__name__
 
-    def on_update(self, fragment):
+    def on_update(self, fragment, value):
+        self.memory_lock.acquire()
+        self.fragments[fragment] = value
         if fragment in self.history:
             self.history.remove(fragment)
         self.history.append(fragment)
-        if len(self.history) > self.memory:
-            name = self.history.pop(0)
-            del self.fragments[name]
+        self.policy.acknowledge(self, fragment)
+        self.memory_lock.release()
 
     def __init__(self, config="config.yaml", memory=30, policy=None):
         # load configuration
@@ -43,23 +46,27 @@ class Server:
             self.policy, CombinedPolicy
         ), "Wrap your privacy policy within a CombinedPolicy."
         self.fragments = dict()
-        self.memory = memory
         self.history = list()
+        self.memory_lock = threading.Lock()
 
         # create the app
         self.app = Flask(__name__)
 
         @self.app.route("/")
         def home():
-            return render_template_string(
+            self.memory_lock.acquire()
+            mem = psutil.virtual_memory()
+            ret = render_template_string(
                 templates._index,
                 config=self.path,
                 operations=len(self.config["methods"]),
                 policies=len(self.policy.policies),
-                percmemory=int(100 * len(self.history) / self.memory),
-                memory=len(self.history),
-                maxmemory=self.memory,
+                percmemory=int(100 * mem.used / mem.total),
+                memory=int(mem.used/1024/1024/1024),
+                maxmemory=int(mem.total/1024/1024/1024),
             )
+            self.memory_lock.release()
+            return ret
 
         @self.app.route("/config", methods=["GET"])
         def config():
@@ -86,13 +93,16 @@ class Server:
 
         @self.app.route("/data", methods=["GET"])
         def data():
-            return render_template_string(
+            self.memory_lock.acquire()
+            ret = render_template_string(
                 templates._data,
-                state=f"Cache usage {len(self.history)}/{self.memory}",
+                state=f"Cached requests: {len(self.history)}",
                 items=[
                     self.purpose(k) + [self.desc(v)] for k, v in self.fragments.items()
                 ],
             )
+            self.memory_lock.release()
+            return ret
 
         @self.app.route("/policies", methods=["GET"])
         def policies():
@@ -117,6 +127,7 @@ class Server:
             if method not in self.config["methods"]:
                 return jsonify(f"Method {method} not supported"), 400
             if "other" in kwargs:
+                self.memory_lock.acquire()
                 fragment1 = self.fragments[fragment]
                 for item in subpoint:
                     if item not in fragment1:
@@ -135,18 +146,20 @@ class Server:
                 new_name = (
                     f"{fragment}:{method}({'.'.join(subpoint)}, {subpoint2_alias})"
                 )
+                self.memory_lock.release()
                 method = self.config["methods"][method]
                 assert isinstance(method, str)
                 package, method = method.rsplit(".", 1)
                 importlib.__import__(package)
                 method = getattr(sys.modules[package], method)
                 try:
-                    self.fragments[new_name] = method(fragment1, fragment2)
+                    output = method(fragment1, fragment2)
+                    self.on_update(new_name, output)
                 except Exception as e:
                     print(str(e))
                     return jsonify(str(e)), 400
-                self.on_update(new_name)
                 return jsonify(new_name), 200
+            self.memory_lock.acquire()
             fragment = self.fragments[fragment]
             method = self.config["methods"][method]["map"]
             package, method = method.rsplit(".", 1)
@@ -156,6 +169,7 @@ class Server:
                 if item not in fragment:
                     return jsonify(f"Item {item} does not exist"), 400
                 fragment = fragment[item]
+            self.memory_lock.release()
             result = method(fragment, self.policy, **kwargs)
             return jsonify(result), 200
 
@@ -163,7 +177,9 @@ class Server:
         assert ":" not in key, "Fragment name should not contain ':'."
         assert "?" not in key, "Fragment name should not contain '?'."
         assert "/" not in key, "Fragment name should not contain '/'."
+        self.memory_lock.acquire()
         self.fragments[key] = value
+        self.memory_lock.release()
 
     def run(self, debug=False):
         self.app.run(debug=debug)

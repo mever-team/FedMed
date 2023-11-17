@@ -16,3 +16,6 @@ class Trustful:
 
     def postprocess(self, result):
         return result
+
+    def acknowledge(self, server, fragment):
+        pass

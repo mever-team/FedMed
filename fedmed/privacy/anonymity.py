@@ -3,7 +3,7 @@ class Anonymity:
         self.k = k
 
     def name(self):
-        return f"{self.k}-anonymity"
+        return f'<span class="badge bg-success text-light" style="width:30px">{self.k}</span> Anonymity'
 
     def description(self):
         return (
@@ -23,3 +23,6 @@ class Anonymity:
 
     def postprocess(self, result):
         return result
+
+    def acknowledge(self, server, fragment):
+        pass

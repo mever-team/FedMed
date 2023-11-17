@@ -10,6 +10,12 @@ privacy:
     params:
       value: 0.0001
       type: float
+  - policy: fedmed.privacy.CacheLimit
+    params:
+      limit: 30
+  - policy: fedmed.privacy.ComplexityCap
+    params:
+      cap: 2
 
 methods:
   __mul__: fedmed.ops.binary.mul

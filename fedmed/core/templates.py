@@ -54,7 +54,7 @@ _index = """
             <div class="col-lg-3 col-md-6">
                 <div class="tile">
                     <h3>Operations</h3>
-					<p>Callable by clients.</p>
+					<p>Local and Map operations callable by clients. Map ones expose aggregated data.</p>
                     <div class="center-content">
 					    <div style="font-size: 36px;">{{operations}}</div>
 					</div>
@@ -66,7 +66,7 @@ _index = """
             <div class="col-lg-3 col-md-6">
                 <div class="tile">
                     <h3>Policies</h3>
-					<p>Privacy with small errors.</p>
+					<p>Running privacy and server protection policies. Privacy often creates small errors.</p>
                     <div class="center-content">
 					    <div style="font-size: 36px;">{{policies}}</div>
 					</div>
@@ -78,16 +78,16 @@ _index = """
             <div class="col-lg-3 col-md-12">
                 <div class="tile">
                     <h3>Cache</h3>
-                    <p>Used by client computations.</p>
+                    <p>Raw data, and the outcomes of client-requested computations. These are never exposed.</p>
                     <div class="center-content">
                         <div class="progress col-lg-12">
                             <div class="progress-bar bg-warning" role="progressbar" style="margin-left: -14px; width: {{percmemory}}%;" aria-valuenow="percmemory"
-                                aria-valuemin="0" aria-valuemax="100">{{memory}}/{{maxmemory}}</div>
+                                aria-valuemin="0" aria-valuemax="100">Memory {{memory}}/{{maxmemory}} GB</div>
                         </div>
                     </div>
 					<p></p>
 					<div class="tile-footer">
-					    <a href="/data" class="btn btn-link btn-block">Details</a>
+					    <a href="/data" class="btn btn-link btn-block">Stored data</a>
 					</div>
                 </div>
             </div>

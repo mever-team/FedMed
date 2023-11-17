@@ -4,7 +4,7 @@ class Coarsening:
         self.type = type
 
     def name(self):
-        return f"{self.value}-coarsening for {self.type}s"
+        return f'<span class="badge bg-secondary text-light">{self.value}</span> Precision for {self.type}s'
 
     def description(self):
         return (
@@ -24,3 +24,6 @@ class Coarsening:
         if self.type == str(type(result)):
             return int(result / self.value) * self.value
         return result
+
+    def acknowledge(self, server, fragment):
+        pass
