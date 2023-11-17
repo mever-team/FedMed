@@ -118,6 +118,13 @@ class FedData:
     def __abs__(self):
         return FedData([abs(device) for device in self.devices], self.config)
 
+    def operator(self, name: str, other):
+        if isinstance(other, FedData):
+            return FedData(
+                [device.operator(name, o) for device, o in zip(self.devices, other.devices)]
+            )
+        return FedData([device.operator(name, other) for device in self.devices], self.config)
+
     def register(self, devices):
         self.devices.extend(devices)
         return self
@@ -141,3 +148,12 @@ class FedData:
             return self.run((item, kwargs))
 
         return method
+
+
+class RemoteRun:
+    def __init__(self, name):
+        self.name = name
+
+    def __call__(self, data1: FedData, data2):
+        assert isinstance(data1, FedData)
+        return data1.operator(self.name, data2)

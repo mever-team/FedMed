@@ -22,6 +22,9 @@ class Remote:
         else:
             return f"Failed to execute {method}. Status code: {response.status_code}"
 
+    def operator(self, name, other):
+        return Remote(self.ip, self._binoperator(name, other))
+
     def __mul__(self, other):
         return Remote(self.ip, self._binoperator("__mul__", other))
 
