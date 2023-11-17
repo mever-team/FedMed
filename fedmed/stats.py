@@ -17,4 +17,4 @@ def ttest(x1: FedData, x2: FedData):
     std2 = std(x2)
     n1 = x1.len()
     n2 = x2.len()
-    return (mean1-mean2)/(std1**2/n1+std2**2/n2)**0.5
+    return (mean1 - mean2) / (std1 ** 2 / n1 + std2 ** 2 / n2) ** 0.5

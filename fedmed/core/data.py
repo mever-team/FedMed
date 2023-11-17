@@ -121,9 +121,14 @@ class FedData:
     def operator(self, name: str, other):
         if isinstance(other, FedData):
             return FedData(
-                [device.operator(name, o) for device, o in zip(self.devices, other.devices)]
+                [
+                    device.operator(name, o)
+                    for device, o in zip(self.devices, other.devices)
+                ]
             )
-        return FedData([device.operator(name, other) for device in self.devices], self.config)
+        return FedData(
+            [device.operator(name, other) for device in self.devices], self.config
+        )
 
     def register(self, devices):
         self.devices.extend(devices)
@@ -154,6 +159,9 @@ class RemoteRun:
     def __init__(self, name):
         self.name = name
 
-    def __call__(self, data1: FedData, data2):
-        assert isinstance(data1, FedData)
-        return data1.operator(self.name, data2)
+    def __call__(self, data: FedData, *args):
+        assert isinstance(data, FedData)
+        if len(args) == 0:
+            return getattr(data, self.name)()
+        assert len(args) == 1
+        return data.operator(self.name, args[0])

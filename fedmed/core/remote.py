@@ -1,4 +1,5 @@
 import requests
+from fedmed.privacy.trustful import Trustful
 
 
 class Remote:

@@ -10,8 +10,12 @@ def std(data: fm.FedData):
     return ((data ** 2).sum() / n - (data.sum() / n) ** 2) ** 0.5
 
 
-ge = fm.RemoteRun("__ge__")
+sum = fm.RemoteRun("sum")
+len = fm.RemoteRun("len")
+max = fm.RemoteRun("max")
+min = fm.RemoteRun("min")
 
+"""
 
 sources = [
     fm.Local({"dim": [1, 6]}),  # also use some local data
@@ -19,14 +23,13 @@ sources = [
     fm.Remote(ip="http://127.0.0.1:8000", fragment="test2"),
 ]
 data = fm.FedData(config="config.yaml").register(sources)
-print(ge(data["dim"], 1).sum())
+print(sum(data["dim"] >= 1))
 #print(std(data["dim"]))
-
-
 """
+
+
 sources = [fm.Remote(ip="http://127.0.0.1:8000", fragment="tsla")]
 data = fm.FedData(sources, config="config.yaml")
 print(data["Region"].set())
-print((data["Region"] == "OCEANEA").sum())
-print(((data["Region"]=="OCEANEA")==1).sum())
-"""
+print((data["Region"] == "OCEANIA").sum())
+print(((data["Region"] == "OCEANIA") > 0).sum())

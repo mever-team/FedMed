@@ -1,3 +1,16 @@
+privacy:
+  - policy: fedmed.privacy.Anonymity
+    params:
+      k: 2
+  - policy: fedmed.privacy.Coarsening
+    params:
+      value: 2
+      type: int
+  - policy: fedmed.privacy.Coarsening
+    params:
+      value: 0.0001
+      type: float
+
 methods:
   __mul__: fedmed.ops.binary.mul
   __pow__: fedmed.ops.binary.pow
