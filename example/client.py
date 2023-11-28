@@ -10,10 +10,10 @@ def std(data: fm.FedData):
     return ((data ** 2).sum() / n - (data.sum() / n) ** 2) ** 0.5
 
 
-sum = fm.RemoteRun("sum")
-len = fm.RemoteRun("len")
-max = fm.RemoteRun("max")
-min = fm.RemoteRun("min")
+sum = fm.RemoteRunnable("sum")
+len = fm.RemoteRunnable("len")
+max = fm.RemoteRunnable("max")
+min = fm.RemoteRunnable("min")
 
 """
 

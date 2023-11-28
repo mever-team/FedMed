@@ -155,7 +155,7 @@ class FedData:
         return method
 
 
-class RemoteRun:
+class RemoteRunnable:
     def __init__(self, name):
         self.name = name
 

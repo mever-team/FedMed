@@ -2,6 +2,14 @@ privacy:
   - policy: fedmed.privacy.Anonymity
     params:
       k: 2
+  - policy: fedmed.privacy.Noise
+    params:
+      value: 4
+      type: int
+  - policy: fedmed.privacy.Noise
+    params:
+      value: 0.0002
+      type: float
   - policy: fedmed.privacy.Coarsening
     params:
       value: 2

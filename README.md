@@ -1,20 +1,24 @@
 # FedMed
 
 A privacy-aware federated computing scheme 
-for statistical dataset analysis. Process data
-scattered across multiple privacy-preserving
-servers.
+to enable potentially non-trusted clients
+perform statistical analysis. Process data
+scattered across multiple servers, each with
+its own privacy policy.
 
 ## Quickstart client
 
 Set up communication channels with remote
-data fragments and organize them into one dataset.
+data fragments (i.e., parts of the same dataset)
+and organize them into one dataset. Datasets 
+are allowed to only partially match in terms of
+structure and operations.
 
 ```python
 import fedmed as fm
 sources = [
-    fm.Remote(ip="http://127.0.0.1:5000", fragment="test array 1/2"),
-    fm.Remote(ip="http://127.0.0.1:5001", fragment="test array 2/2")
+    fm.Remote(ip="http://127.0.0.1:8000", fragment="test array part 1"),
+    fm.Remote(ip="http://127.0.0.1:8000", fragment="test array part 2")
 ]
 data = fm.FedData(sources, config="config.yaml")
 ```
@@ -23,14 +27,16 @@ Call simple operations among those described in the
 configuration file `config.yaml` (find a first default
 in the `example/` folder).
 The same file could be shared between the client and 
-servers, but some servers in your deployment
-context may not support some of these
-capabilities and will fail dependent computations. 
+servers, but this is not mandatory; 
+some servers may not support some of these
+capabilities, in which case you will fail dependent
+computations you will try to run.
+
 Operations are performed under a map-reduce scheme.
 The map is performed in the servers, and the reduce
-on the client. Each server 
-is left in control of how it performs its namesake
-map method. 
+on the client. Each server is left in control of both
+how it performs its namesake map methods, and how it 
+distorts outcomes to comply with some privacy policy. 
 
 ```python
 mean = data.sum() / data.len()
@@ -66,8 +72,8 @@ import fedmed as fm
 server = fm.Server(config="config.yaml")
 ```
 
-:construction: To ensure privacy,
-`fedmed.ops.private` operations are not always exact.
+:construction: Privacy policies may make
+`fedmed.ops.private` operations inexact.
 
 Each server can contain fragments of several datasets.
 Load data as pandas dataframes or combinations
@@ -75,8 +81,8 @@ of lists and dicts, and set them as fragments
 like below.
 
 ```python
-data = [1, 2, 3]
-server["test array 1/2"] = data
+data = [1, 2, 3]  # or dict of lists, pandas dataframe, etc
+server["test array part 1"] = data
 ```
 
 Finally, run your server with a flask-supporing
