@@ -29,7 +29,7 @@ class Server:
         self.policy.acknowledge(self, fragment)
         self.memory_lock.release()
 
-    def __init__(self, config="config.yaml", memory=30, policy=None):
+    def __init__(self, config="config.yaml", policy=None):
         # load configuration
         if isinstance(config, str):
             self.path = config
@@ -110,7 +110,7 @@ class Server:
                 templates._policies,
                 state=f'<div style="margin-bottom: 20px;">Sequentially applied policies loaded from <a href="/config">{self.path}</a>.</div>',
                 items=[
-                    [p.name(), p.description().replace("\n", " ")]
+                    [p.name(), str(p.applied), p.description().replace("\n", " ")]
                     for p in self.policy.policies
                 ],
             )

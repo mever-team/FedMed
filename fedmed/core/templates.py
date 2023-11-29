@@ -182,13 +182,15 @@ _policies = """
                 <thead>
                     <tr>
                         <th>Policy</th>
+                        <th>Applied</th>
                         <th>Description</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for key, description in items%}
+                    {% for key, applied, description in items%}
                     <tr>
                         <td class="col-md-3">{{ key | safe }}</td>
+                        <td class="col-md-3">{{ applied | safe }}</td>
                         <td>{{ description | safe }}</td>
                     </tr>
                     {% endfor %}

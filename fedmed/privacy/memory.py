@@ -1,6 +1,7 @@
 class CacheLimit:
     def __init__(self, limit):
         self.limit = limit
+        self.applied = 0
 
     def name(self):
         return f'<span class="badge bg-primary text-light" style="width:30px">{self.limit}</span> Cache limit'
@@ -20,6 +21,7 @@ class CacheLimit:
 
     def acknowledge(self, server, fragment):
         if len(server.history) > self.limit:
+            self.applied += 1
             name = server.history.pop(0)
             del server.fragments[name]
 
@@ -27,6 +29,7 @@ class CacheLimit:
 class ComplexityCap:
     def __init__(self, cap):
         self.cap = cap
+        self.applied = 0
 
     def name(self):
         return f'<span class="badge bg-primary text-light" style="width:30px">{self.cap}</span> Complexity cap'
@@ -49,5 +52,6 @@ class ComplexityCap:
 
     def acknowledge(self, server, fragment):
         if fragment.count(":") > self.cap:
+            self.applied += 1
             server.history.remove(fragment)
             del server.fragments[fragment]

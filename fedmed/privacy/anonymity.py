@@ -1,6 +1,7 @@
 class Anonymity:
     def __init__(self, k):
         self.k = k
+        self.applied = 0
 
     def name(self):
         return f'<span class="badge bg-success text-light" style="width:30px">{self.k}</span> Anonymity'
@@ -18,6 +19,7 @@ class Anonymity:
 
     def preprocess(self, entries):
         if len(entries) < self.k:
+            self.applied += 1
             return []
         return entries
 

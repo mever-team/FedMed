@@ -2,6 +2,7 @@ class Coarsening:
     def __init__(self, value, type):
         self.value = value
         self.type = type
+        self.applied = 0
 
     def name(self):
         return f'<span class="badge bg-secondary text-light">{self.value}</span> Precision for {self.type}s'
@@ -21,7 +22,8 @@ class Coarsening:
         return entries
 
     def postprocess(self, result):
-        if self.type == str(type(result)):
+        if self.type == result.__class__.__name__:
+            self.applied += 1
             return int(result / self.value) * self.value
         return result
 
