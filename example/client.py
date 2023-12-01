@@ -6,7 +6,7 @@ sources = [
               "second": [5, 6, 7, 8, 9]}),  # can also use local data
 ]
 data = fm.FedData(config="config.yaml").register(sources)
-print(fm.stats.Student().reject(data["first"], data["second"]))
+print(fm.stats.test.Student().reject(data["first"], data["second"]))
 
 
 

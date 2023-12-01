@@ -1,25 +1,5 @@
-from fedmed.core import FedData, RemoteRunnable
+from fedmed.stats.base import *
 import scipy
-
-
-sum = RemoteRunnable("sum")
-len = RemoteRunnable("len")
-max = RemoteRunnable("max")
-min = RemoteRunnable("min")
-
-
-def mean(data: FedData):
-    return data.sum() / data.len()
-
-
-def var(data: FedData, df: int = 0):
-    # df=1 for sample variance
-    n = data.len()
-    return (data ** 2).sum() / (n-df) - (data.sum()) ** 2 / n / (n-df)
-
-
-def std(data: FedData, df: int = 0):
-    return var(data, df)**0.5
 
 
 class Test:
@@ -39,7 +19,6 @@ class Test:
             t = -t
         p = scipy.stats.t.cdf(-t, df) * (1+int(self.mode == "two-tailed"))
         return 1-p if self.alpha is None else (1-p > self.alpha)
-
 
 
 class Welsh:
