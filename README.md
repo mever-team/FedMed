@@ -1,7 +1,7 @@
 # FedMed
 
 A privacy-aware federated computing scheme 
-to enable potentially non-trusted clients
+to let non-trusted clients
 perform statistical analysis. Process data
 scattered across multiple servers, each with
 its own privacy policy.

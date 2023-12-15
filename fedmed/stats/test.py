@@ -8,11 +8,11 @@ class Test:
         self.alpha = alpha
         assert mode in ["less", "greater", "two-tailed"]
 
-    def tstatistic(self, x1: FedData, x2: FedData) -> (float, float):
-        raise AttributeError("Missing tstatistic implementation")
+    def t_statistic(self, x1: FedData, x2: FedData) -> (float, float):
+        raise AttributeError("Missing t_statistic implementation")
 
     def reject(self, x1: FedData, x2: FedData):
-        t, df = self.tstatistic(x1, x2)
+        t, df = self.t_statistic(x1, x2)
         if self.mode == "two-tailed":
             t = abs(t)
         elif self.mode == "less":
@@ -21,8 +21,8 @@ class Test:
         return 1-p if self.alpha is None else (1-p > self.alpha)
 
 
-class Welsh:
-    def tstatistic(self, x1: FedData, x2: FedData):
+class Welch:
+    def t_statistic(self, x1: FedData, x2: FedData):
         n1 = len(x1)
         n2 = len(x2)
         mean1 = mean(x1)
@@ -39,7 +39,7 @@ class Welsh:
 
 
 class Student(Test):
-    def tstatistic(self, x1, x2):
+    def t_statistic(self, x1, x2):
         n1 = len(x1)
         n2 = len(x2)
         mean1 = mean(x1)
