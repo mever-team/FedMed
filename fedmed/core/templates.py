@@ -189,7 +189,7 @@ _policies = """
                 <tbody>
                     {% for key, applied, description in items%}
                     <tr>
-                        <td class="col-md-3">{{ key | safe }}</td>
+                        <td class="col-md-3">{{ key | safe }}
                         <td class="col-md-3">{{ applied | safe }}</td>
                         <td>{{ description | safe }}</td>
                     </tr>

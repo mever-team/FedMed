@@ -2,6 +2,9 @@ class Trustful:
     def __init__(self):
         pass
 
+    def on(self, fragment):
+        return self
+
     def name(self):
         return "Trustful"
 

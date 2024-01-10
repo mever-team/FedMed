@@ -4,8 +4,21 @@ privacy:
       k: 2
   - policy: fedmed.privacy.Noise
     params:
+      value: 1
+      type: int
+      filter:
+        - "*.len()"
+  - policy: fedmed.privacy.Noise
+    params:
       value: 4
       type: int
+      reject:
+        - "*.len()"
+  - policy: fedmed.privacy.Saturation
+    params:
+      min: 0
+      filter:
+        - "*.len()"
   - policy: fedmed.privacy.Noise
     params:
       value: 0.0002
@@ -23,7 +36,7 @@ privacy:
       limit: 30
   - policy: fedmed.privacy.ComplexityCap
     params:
-      cap: 2
+      cap: 3
 
 methods:
   __mul__: fedmed.ops.binary.mul

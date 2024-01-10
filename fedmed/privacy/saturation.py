@@ -1,10 +1,11 @@
 import fnmatch
 
 
-class Coarsening:
-    def __init__(self, value, type, **kwargs):
-        self.value = value
-        self.type = type
+class Saturation:
+    def __init__(self, **kwargs):
+        self.min = kwargs.get("min", None)
+        self.max = kwargs.get("max", None)
+        self.type = kwargs.get("type", None)
         self.applied = 0
         self.condition = kwargs.get("filter", ["*"])
         self.reject = kwargs.get("reject", [])
@@ -17,12 +18,13 @@ class Coarsening:
         for reject in self.reject:
             cond += "<br>&emsp;<b style=\"color:red\";>ignore</b>&nbsp;&nbsp;<i>" + reject.replace("*",
                                                                                                    '<span style="color: blue;">&lowast;</span>') + '</i>'
-        return f'<span class="badge bg-secondary text-light">{self.value}</span> Precision for {self.type}s' + cond
+        return f'<span class="badge bg-secondary text-light">[{"-&infin;"if self.min is None else self.min}, {"&infin;" if self.max is None else self.max}]</span> Saturation for {"number" if self.type is None else self.type}s' + cond
 
     def description(self):
         return (
-            f"Any Map operation (e.g., num, sum) outcome of type {self.type}"
-            f" is coarsened to numerical precision {self.value}. This"
+            f"Any Map operation (e.g., num, sum) outcome{' of type '+self.type if self.type is not None else ''}"
+            f" whose outcome lies outside the interval [{'-&infin;'if self.min is None else self.min}, {'&infin;' if self.max is None else self.max}]  "
+            f" has that value snapped to the interval's edges. This"
             f" includes quantile calculations. Other data types require"
             f" different versions of this rule."
         )
@@ -43,9 +45,13 @@ class Coarsening:
         return entries
 
     def postprocess(self, result):
-        if self.type == result.__class__.__name__:
+        if self.type is None or self.type == result.__class__.__name__:
             self.applied += 1
-            return int(result / self.value) * self.value
+            if self.min is not None and result < self.min:
+                result = self.min
+            if self.max is not None and result > self.max:
+                result = self.max
+            return result
         return result
 
     def acknowledge(self, server, fragment):

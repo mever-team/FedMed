@@ -1,10 +1,31 @@
+import fnmatch
+
+
 class Anonymity:
-    def __init__(self, k):
+    def __init__(self, k, **kwargs):
         self.k = k
         self.applied = 0
+        self.condition = kwargs.get("filter", ["*"])
+        self.reject = kwargs.get("reject", [])
+
+    def on(self, fragment):
+        for condition in self.reject:
+            if fnmatch.fnmatch(fragment, condition):
+                return None
+        for condition in self.condition:
+            if fnmatch.fnmatch(fragment, condition):
+                return self
+        return None
 
     def name(self):
-        return f'<span class="badge bg-success text-light" style="width:30px">{self.k}</span> Anonymity'
+        if '\n'.join(self.condition) == '*':
+            cond = ""
+        else:
+            cond = " on:<br>&emsp;<i>"+"<br>&emsp;".join(self.condition).replace("*", '<span style="color: blue;">&lowast;</span>')+'</i>'
+        for reject in self.reject:
+            cond += "<br>&emsp;<b style=\"color:red\";>ignore</b>&nbsp;&nbsp;<i>" + reject.replace("*",
+                                                                                                   '<span style="color: blue;">&lowast;</span>') + '</i>'
+        return f'<span class="badge bg-success text-light" style="width:30px">{self.k}</span> Anonymity'+cond
 
     def description(self):
         return (

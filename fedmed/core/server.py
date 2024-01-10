@@ -10,10 +10,11 @@ import psutil
 
 class Server:
     def purpose(self, key):
-        if ":" not in key:
+        if "." not in key:
             return [key, '<span class="badge bg-info text-dark">Raw</span>']
-        fragment, request = key.split(":", 1)
-        return [fragment, request.replace("_", "")]
+        fragment = key.split(".", 1)[0]
+        request = key
+        return [fragment, request]#.replace("_", "")]
 
     def desc(self, value):
         if isinstance(value, list) or isinstance(value, dict):
@@ -26,7 +27,7 @@ class Server:
         if fragment in self.history:
             self.history.remove(fragment)
         self.history.append(fragment)
-        self.policy.acknowledge(self, fragment)
+        self.policy.on(fragment).acknowledge(self, fragment)
         self.memory_lock.release()
 
     def __init__(self, config="config.yaml", policy=None):
@@ -143,9 +144,14 @@ class Server:
                 else:
                     fragment2 = kwargs["other"]
                     subpoint2_alias = fragment2
-                new_name = (
-                    f"{fragment}:{method}({'.'.join(subpoint)}, {subpoint2_alias})"
-                )
+                if not subpoint:
+                    new_name = (
+                        f"{fragment}.{method}({subpoint2_alias})"
+                    )
+                else:
+                    new_name = (
+                        f"{fragment}.{method}({'.'.join(subpoint)}, {subpoint2_alias})"
+                    )
                 self.memory_lock.release()
                 method = self.config["methods"][method]
                 assert isinstance(method, str)
@@ -160,6 +166,9 @@ class Server:
                     return jsonify(str(e)), 400
                 return jsonify(new_name), 200
             self.memory_lock.acquire()
+            new_name = (
+                f"{fragment}.{method}({'.'.join(subpoint)})"
+            )
             fragment = self.fragments[fragment]
             method = self.config["methods"][method]["map"]
             package, method = method.rsplit(".", 1)
@@ -170,11 +179,15 @@ class Server:
                     return jsonify(f"Item {item} does not exist"), 400
                 fragment = fragment[item]
             self.memory_lock.release()
-            result = method(fragment, self.policy, **kwargs)
+            result = method(fragment, self.policy.on(new_name), **kwargs)
             return jsonify(result), 200
 
     def __setitem__(self, key, value):
-        assert ":" not in key, "Fragment name should not contain ':'."
+        assert key!="self", "Fragment name should not be 'self' '.'."
+        assert "." not in key, "Fragment name should not contain '.'."
+        assert "(" not in key, "Fragment name should not contain '('."
+        assert ")" not in key, "Fragment name should not contain ')'."
+        assert "*" not in key, "Fragment name should not contain '*'."
         assert "?" not in key, "Fragment name should not contain '?'."
         assert "/" not in key, "Fragment name should not contain '/'."
         self.memory_lock.acquire()

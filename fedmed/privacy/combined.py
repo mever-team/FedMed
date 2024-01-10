@@ -1,5 +1,6 @@
 import importlib
 import sys
+import fnmatch
 
 
 class CombinedPolicy:
@@ -10,6 +11,12 @@ class CombinedPolicy:
             importlib.__import__(package)
             init = getattr(sys.modules[package], method)
             self.policies.append(init(**specs["params"]))
+
+    def on(self, fragment):
+        ret = CombinedPolicy([])
+        ret.policies = [policy.on(fragment) for policy in self.policies]
+        ret.policies = [policy for policy in ret.policies if policy is not None]
+        return ret
 
     def bins(self, results):
         for policy in self.policies:
