@@ -4,71 +4,17 @@ A privacy-aware federated computing scheme
 to let non-trusted clients
 perform statistical analysis. Process data
 scattered across multiple servers, each with
-its own privacy policy.
+its own privacy policy. Merge these remote data 
+and local (or simulated) sources.
 
 **Author:** Emmanouil (Manios) Krasanakis<br>
 **Contact:** maniospas@hotmail.com<br>
 **License:** Apache 2<br>
 
-**Documentation**: https://fedmed.readthedocs.io
+<details>
+<summary>Quickstart data server</summary>
+<br>
 
-## Quickstart client
-
-Install FedMed with:
-
-```
-pip install fedmed
-```
-
-Set up communication channels with remote
-data fragments (i.e., parts of the same dataset)
-and organize them into one dataset. Datasets 
-are allowed to only partially match in terms of
-structure and operations.
-
-```python
-import fedmed as fm
-sources = [
-    fm.Remote(ip="http://127.0.0.1:8000", fragment="test array part 1"),
-    fm.Remote(ip="http://127.0.0.1:8000", fragment="test array part 2")
-]
-data = fm.FedData(sources, config="config.yaml")
-```
-
-[Local data and simulation](docs/simulation.md).
-
-Call simple operations among those described in the 
-configuration file `config.yaml` (find a first default
-in the `example/` folder).
-The same file could be shared between the client and 
-servers, but this is not mandatory; 
-some servers may not support some of these
-capabilities, in which case you will fail dependent
-computations you will try to run.
-
-Operations are performed under a map-reduce scheme.
-The map is performed in the servers, and the reduce
-on the client. Each server is left in control of both
-how it performs its namesake map methods, and how it 
-distorts outcomes to comply with some privacy policy. 
-
-```python
-mean = data.sum() / data.len()
-print('Mean', mean)
-```
-
-:lock: Control of map operations allows server owners 
-to set their own privacy policies. For example, 
-they may share new internal data compared to 
-old ones only when enough new samples are gathered
-(in the interim, outcomes on older versions of the
-dataset will be exposed).
-
-For the above code to run, you need to set up
-some devices to run at the respective ip addresses.
-
-
-##  Set up a server
 
 Install FedMed with:
 
@@ -119,3 +65,65 @@ if __name__ == "__main__":
 
 :globe_with_meridians: Set up a reverse proxy server to restrict
 who can perform operations on your system.
+
+</details>
+
+<details>
+<summary>Example client program</summary>
+<br>
+
+Install FedMed with:
+
+```
+pip install fedmed
+```
+
+Set up communication channels with remote
+data fragments (i.e., parts of the same dataset)
+and organize them into one dataset. Datasets 
+are allowed to only partially match in terms of
+structure and operations.
+
+```python
+import fedmed as fm
+sources = [
+    fm.Remote(ip="http://127.0.0.1:8000", fragment="test array part 1"),
+    fm.Remote(ip="http://127.0.0.1:8000", fragment="test array part 2")
+]
+data = fm.FedData(sources, config="config.yaml")
+```
+
+Call simple operations among those described in the 
+configuration file `config.yaml` (find a first default
+in the `example/` folder).
+The same file could be shared between the client and 
+servers, but this is not mandatory; 
+some servers may not support some of these
+capabilities, in which case you will fail dependent
+computations you will try to run.
+
+Operations are performed under a map-reduce scheme.
+The map is performed in the servers, and the reduce
+on the client. Each server is left in control of both
+how it performs its namesake map methods, and how it 
+distorts outcomes to comply with some privacy policy. 
+
+```python
+mean = data.sum() / data.len()
+print('Mean', mean)
+```
+
+:lock: Control of map operations allows server owners 
+to set their own privacy policies. For example, 
+they may share new internal data compared to 
+old ones only when enough new samples are gathered
+(in the interim, outcomes on older versions of the
+dataset will be exposed).
+
+For the above code to run, you need to set up
+some devices to run at the respective ip addresses.
+</details>
+
+
+
+**Documentation**: https://fedmed.readthedocs.io
