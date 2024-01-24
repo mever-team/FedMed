@@ -6,6 +6,11 @@ perform statistical analysis. Process data
 scattered across multiple servers, each with
 its own privacy policy.
 
+**Author:** Emmanouil (Manios) Krasanakis<br>
+**Contact:** maniospas@hotmail.com<br>
+**License:** Apache 2<br>
+
+**Documentation**: https://fedmed.readthedocs.io
 
 ## Quickstart client
 
