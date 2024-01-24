@@ -1,4 +1,4 @@
-Client setup
+Run a client
 ============
 
 Connecting to data fragments

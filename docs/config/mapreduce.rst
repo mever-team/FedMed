@@ -37,12 +37,8 @@ configuration will look like this:
         map: fedmed.ops.private.num
         reduce: fedmed.ops.public.sum
 
-Pure remote operations
-----------------------
-
-
-Client configuration
---------------------
+Client data configuration
+-------------------------
 
 Common operations available for client reduction mechanisms
 may be found in the `fedmed.ops.public` module, and take
@@ -53,7 +49,6 @@ Servers are not required to disclose all errors.
 
 .. note:: You can write your own versions of reduction mechanisms.
 
-Excluding the server part, typically client methods.
 Calling the whole map-reduce scheme can be done either
 via a functional call on `FedData` objects or by declaring
 a `Remote` callable. The following snippet demonstrates
@@ -83,11 +78,55 @@ these two patterns:
     of such operations is determined by client and server
     configuration.
 
+The server-side of operations is dynamically requested upon
+execution. Therefore, a client configuration only needs to
+declare the reduction mechanism for each operation for which
+it receives data, like so:
+
+.. code-block:: yaml
+
+    methods:
+      sum:
+        reduce: fedmed.ops.public.sum
+      len:
+        reduce: fedmed.ops.public.sum
+
+
 
 Server configuration
 --------------------
 
-This describes common operations available to clients.
+Server configuration looks like the following example
+and describes both common operations available to clients
+and privacy policies. In addition to reduction operations,
+servers may also expose internal methods that can be used
+to combine data types and, when called by clients generate
+temporary local data fragments. That is, the outcome of
+non-map operations never leave the server. Declare
+operations via their import location `&loc` via `&name: &loc`
+or `&name: map: &loc` where `&name` refers to the name with
+which clients make calls. Names enclosed in double underscores
+implement corresponding Python builtins.
 
-In addition to reductions, servers may also expose internal
-methods
+
+.. code-block:: yaml
+
+    privacy:
+      - policy: fedmed.privacy.Anonymity
+        params:
+          k: 2
+      - policy: fedmed.privacy.CacheLimit
+        params:
+          limit: 30
+      - policy: fedmed.privacy.ComplexityCap
+        params:
+          cap: 3
+
+    methods:
+      __mul__: fedmed.ops.binary.mul
+      __pow__: fedmed.ops.binary.pow
+      __add__: fedmed.ops.binary.add
+      sum:
+        map: fedmed.ops.private.sum
+      len:
+        map: fedmed.ops.private.num

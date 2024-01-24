@@ -2,7 +2,12 @@ FedMed
 ======
 
 
-This is FedMed's documentation |:heart:| .
+This is privacy-aware federated computing library
+to let clients perform statistical analysis without
+looking at raw data. Process data fragments
+scattered across multiple servers, each with
+its own privacy policy. Merge these remote data
+and local (or simulated) sources.
 
 .. toctree::
    :hidden:
@@ -11,8 +16,8 @@ This is FedMed's documentation |:heart:| .
 
    basics/introduction
    basics/simulation
-   basics/client
    basics/server
+   basics/client
 
 .. toctree::
    :hidden:
