@@ -146,7 +146,7 @@ class FedData:
         return method(results)
 
     def __getattr__(self, item):
-        if item in ["run", "devices", "config"]:
+        if item in ["run", "devices", "config", "register", "operator"]:
             return object.__getattribute__(self, item)
 
         def method(**kwargs):

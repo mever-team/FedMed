@@ -1,3 +1,5 @@
+import json
+
 from flask import Flask, request, jsonify, render_template_string
 import yaml
 import sys
@@ -6,6 +8,7 @@ from fedmed.core import templates
 from fedmed.privacy import CombinedPolicy
 import threading
 import psutil
+import json
 
 
 class Server:
@@ -116,9 +119,7 @@ class Server:
                 ],
             )
 
-        @self.app.route("/<fragment>/<method>", methods=["POST"])
-        def process_fragment_method(fragment, method):
-            data = request.json
+        def manual_request(fragment, method, data, jsonify=json.dumps):
             if data is None:
                 subpoint = []
                 kwargs = {}
@@ -181,6 +182,13 @@ class Server:
             self.memory_lock.release()
             result = method(fragment, self.policy.on(new_name), **kwargs)
             return jsonify(result), 200
+
+        @self.app.route("/<fragment>/<method>", methods=["POST"])
+        def process_fragment_method(fragment, method):
+            data = request.json
+            return manual_request(fragment, method, data=data, jsonify=jsonify)
+
+        self.manual_request = manual_request
 
     def __setitem__(self, key, value):
         assert key!="self", "Fragment name should not be 'self' '.'."

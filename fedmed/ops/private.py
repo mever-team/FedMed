@@ -26,6 +26,11 @@ def unique(entries, policy):
 
 
 @privatize
+def distribution(entries, policy):
+    pass
+
+
+@privatize
 def max(entries):
     if not entries:
         return None

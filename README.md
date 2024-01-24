@@ -6,7 +6,14 @@ perform statistical analysis. Process data
 scattered across multiple servers, each with
 its own privacy policy.
 
+
 ## Quickstart client
+
+Install FedMed with:
+
+```
+pip install fedmed
+```
 
 Set up communication channels with remote
 data fragments (i.e., parts of the same dataset)
@@ -22,6 +29,8 @@ sources = [
 ]
 data = fm.FedData(sources, config="config.yaml")
 ```
+
+[Local data and simulation](docs/simulation.md).
 
 Call simple operations among those described in the 
 configuration file `config.yaml` (find a first default
@@ -55,6 +64,13 @@ some devices to run at the respective ip addresses.
 
 
 ##  Set up a server
+
+Install FedMed with:
+
+```
+pip install fedmed
+```
+
 
 Data servers host your data for clients to use.
 Custom map operations of the map-reduce scheme
