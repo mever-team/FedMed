@@ -128,4 +128,4 @@ some devices to run at the respective ip addresses.
 
 
 
-**Documentation**: https://fedmed.readthedocs.io
+Full documentation in https://fedmed.readthedocs.io .
