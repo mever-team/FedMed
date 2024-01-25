@@ -5,7 +5,7 @@ FedMed offers two data sources that can incorporate
 local data, i.e., loaded from within the client machine:
 a) a production-ready `Local` data source, which creates
 minimal overhead, and b) a scalable `Simulation` data source,
-which wraps calls to a programmatic Server without needing
+which wraps calls to a programmatically declared server without needing
 to start a Flask service on an IP and can be used as proof-of-concept.
 
 Local data

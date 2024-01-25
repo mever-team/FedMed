@@ -10,9 +10,10 @@ For example, each server owner may customize which
 privacy policies are applied on their data.
 
 Configuration is written in
-`yaml <https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html>`_,
-which makes for simple. In general, there are two top-level
-bocks: `privacy` to :doc:`declare privacy policies <privacy>` used by servers,
+`yaml <https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html>`_.
+In general, there are two top-level
+bocks: `privacy` to :doc:`declare privacy policies <privacy>` used by servers
+to declare a list of privacy policies sequentially applied on map operation outcomes,
 and `methods` to
 :doc:`declare map-reduce operations <mapreduce>` supported by servers and clients.
 A simple configuration file that is shared between a server and client

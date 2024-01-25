@@ -9,6 +9,11 @@ We adopt the following terminology in this federated environment:
 | **Server** - Contains non-exposed data fragments and may be hosted by medical institutions. Multiple servers may host parts of the same combined dataset. Learn how to set up a server :doc:`here <../basics/server>`.
 | **Client** - Runs statistical tests on combined datasets of data fragments. Is run by a data scientist with server access permissions. Learn how to run client code :doc:`here <../basics/client>`.
 
+Install the library in your environment with:
+
+.. code-block::
+    pip install --upgrade yamlres
+
 Context
 -------
 
