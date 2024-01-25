@@ -1,5 +1,7 @@
 # FedMed
 
+[![Documentation Status](https://readthedocs.org/projects/fedmed/badge/?version=latest)](https://fedmed.readthedocs.io/en/latest/?badge=latest)
+
 A privacy-aware federated computing scheme 
 to let non-trusted clients
 perform statistical analysis. Process data

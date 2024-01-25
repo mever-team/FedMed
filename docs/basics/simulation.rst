@@ -68,8 +68,8 @@ extend this example to show proof-of-concept in one machine:
     server1["testA"] = [1, 2, 3, 4]  # or dict of lists, pandas dataframe, etc
     server2["testA"] = [5, 6, 7, 8, 9]
 
-You can now add the server within a Simulation data source that
-references the fragment name:
+You can now add the servers within a Simulation data source that
+references which fragment should be obtained from each one:
 
 .. code-block:: python
 
@@ -80,7 +80,35 @@ references the fragment name:
 
     data = fm.FedData(sources, config="config.yaml")
 
-.. warning:: Running server simulations may require intensive
-    operations, including json serialization and serialization
-    that occurs during data transfers (it only removes the
-    data structure element).
+Server simulations will also perform
+json serialization and serialization
+that occurs during data transfers (it only removes the
+data structure element).
+
+You can set a custom communication
+layer in the simulation that helps you gather statistics
+about data usage when the proof-of-concept will be applied
+in practice. You can have a different communication layer
+for each simulated server, or use the same one to
+get a sense of data transmitted and received by the client
+application. This can be done like this:
+
+
+.. code-block:: python
+
+    communication = fm.SimulatedCommunication(tracker=True)
+    sources = [
+        fm.Simulation(server=server1, fragment="testA", communication=communication),
+        fm.Simulation(server=server1, fragment="testB", communication=communication)
+    ]
+
+    data = fm.FedData(sources, config="config.yaml")
+    print(sum(data**2)/len(data))
+
+    import numpy as np
+    print("Total sent bytes", np.array(communication.sent).sum())
+    print("Total received bytes", np.array(communication.received).sum())
+
+
+
+
