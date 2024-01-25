@@ -12,6 +12,7 @@ We adopt the following terminology in this federated environment:
 Install the library in your environment with:
 
 .. code-block:: bash
+
     pip install --upgrade yamlres
 
 Context
