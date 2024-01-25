@@ -33,8 +33,9 @@ class Simulation:
         method = name
         payload = {
             "subpoint": self.subpoint,
-            "kwargs": {"other": other.subpoint if isinstance(other, Simulation) else other},
+            "kwargs": {"other": [other.fragment] if isinstance(other, Simulation) else other},
         }
+        #print(method, self.fragment, payload)
         payload = self.communication.send(payload)
         response, status_code = self.server.manual_request(self.fragment, method, payload)
         response, status_code = self.communication.receive((response, status_code))

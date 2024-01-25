@@ -20,6 +20,10 @@ def pow(a, b):
 def add(a, b):
     return a + b
 
+@operator
+def mul(a, b):
+    return a * b
+
 
 @operator
 def sub(a, b):

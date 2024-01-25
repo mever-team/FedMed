@@ -89,7 +89,7 @@ it receives data, like so:
       sum:
         reduce: fedmed.ops.public.sum
       len:
-        reduce: fedmed.ops.public.sum
+        reduce: fedmed.ops.public.sum  # sum the len of each data fragment
 
 
 
@@ -103,10 +103,11 @@ servers may also expose internal methods that can be used
 to combine data types and, when called by clients generate
 temporary local data fragments. That is, the outcome of
 non-map operations never leave the server. Declare
-operations via their import location `&loc` via `&name: &loc`
-or `&name: map: &loc` where `&name` refers to the name with
-which clients make calls. Names enclosed in double underscores
-implement corresponding Python builtins.
+operations with import location `&loc` with the expression
+`&name: &loc` or `&name: map: &loc`. In these, `&name` refers
+to the name with which clients make calls. Names enclosed
+in double underscores (e.g., `__add__`) implement corresponding
+operators.
 
 
 .. code-block:: yaml

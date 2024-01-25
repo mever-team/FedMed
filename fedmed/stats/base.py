@@ -14,7 +14,10 @@ def mean(data: FedData):
 def var(data: FedData, df: int = 0):
     # df=1 for sample variance
     n = len(data)
-    return sum(data ** 2) / (n-df) - sum(data) ** 2 / n / (n-df)
+    r = sum(data ** 2) / (n-df) - sum(data) ** 2 / n / (n-df)
+    if r < 0:
+        r = 0
+    return r
 
 
 def std(data: FedData, df: int = 0):

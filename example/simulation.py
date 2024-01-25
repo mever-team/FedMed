@@ -1,19 +1,17 @@
 import fedmed as fm
-from fedmed.stats.base import *
-
+import numpy as np
 
 server = fm.Server(config="config.yaml")
-server["test"] = {"first": [1, 2, 3, 4, 5, 6, 7, 8], "second": [5, 6, 7, 8, 9]}
+server["treatmentA"] = {
+    "Gender": ["Man", "Woman", "Woman", "Man", "Man", "Man", "Woman"]*100,
+    "Receptive": ["Yes", "Yes", "Yes", "No", "No", "No", "Yes"]*100
+}
 
-communication = fm.SimulatedCommunication(tracker=True)
-sources = [
-    fm.Simulation(server=server, fragment="test", communication=communication)
-]
+data = fm.FedData([
+    fm.Simulation(server=server, fragment="treatmentA"),
+])
 
-data = fm.FedData(sources, config="config.yaml")
-print(sum(data["first"]**2)/len(data["first"]))
-#print(fm.stats.test.Student().reject(data["first"], 1-data["first"]))
-
-import numpy as np
-print("Total sent bytes", np.array(communication.sent).sum())
-print("Total received bytes", np.array(communication.received).sum())
+from fedmed.stats.base import std, mean
+d1 = data["Gender"] == "Man"
+d2 = data["Receptive"] == "Yes"
+print("Pearson correlation", min(1, mean(d1*d2)-mean(d1)*mean(d2))/(std(d1)*std(d2)))

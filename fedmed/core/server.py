@@ -133,12 +133,14 @@ class Server:
                 fragment1 = self.fragments[fragment]
                 for item in subpoint:
                     if item not in fragment1:
+                        self.memory_lock.release()
                         return jsonify(f"Item {item} does not exist"), 400
                     fragment1 = fragment1[item]
                 if isinstance(kwargs["other"], list):
-                    fragment2 = self.fragments[fragment]
-                    for item in kwargs["other"]:
+                    fragment2 = self.fragments[kwargs["other"][0]]
+                    for item in kwargs["other"][1:]:
                         if item not in fragment2:
+                            self.memory_lock.release()
                             return jsonify(f"Item {item} does not exist"), 400
                         fragment2 = fragment2[item]
                     subpoint2_alias = ".".join(kwargs["other"])

@@ -1,0 +1,41 @@
+privacy:
+  - policy: fedmed.privacy.Anonymity
+    params:
+      k: 2
+  - policy: fedmed.privacy.CacheLimit
+    params:
+      limit: 30
+  - policy: fedmed.privacy.ComplexityCap
+    params:
+      cap: 3
+
+methods:
+  __mul__: fedmed.ops.binary.mul
+  __pow__: fedmed.ops.binary.pow
+  __add__: fedmed.ops.binary.add
+  __sub__: fedmed.ops.binary.sub
+  __eq__: fedmed.ops.binary.eq
+  __ne__: fedmed.ops.binary.ne
+  __lt__: fedmed.ops.binary.lt
+  __le__: fedmed.ops.binary.le
+  __gt__: fedmed.ops.binary.gt
+  __ge__: fedmed.ops.binary.ge
+  __abs__: fedmed.ops.binary.abs
+  max:
+    map: fedmed.ops.private.max
+    reduce: fedmed.ops.public.max
+  min:
+    map: fedmed.ops.private.min
+    reduce: fedmed.ops.public.min
+  sum:
+    map: fedmed.ops.private.sum
+    reduce: fedmed.ops.public.sum
+  sqsum:
+    map: fedmed.ops.private.sqsum
+    reduce: fedmed.ops.public.sum
+  len:
+    map: fedmed.ops.private.num
+    reduce: fedmed.ops.public.sum
+  set:
+    map: fedmed.ops.private.unique
+    reduce: fedmed.ops.public.union

@@ -13,7 +13,7 @@ Install the library in your environment with:
 
 .. code-block:: bash
 
-    pip install --upgrade yamlres
+    pip install --upgrade fedmed
 
 Context
 -------

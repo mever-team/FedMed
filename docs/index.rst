@@ -12,7 +12,7 @@ with local (or simulated) sources.
 | **Author**: Emmanouil (Manios) Krasanakis
 | **Contact**: maniospas@hotmail.com
 | **License**: Apache 2
-| **Repository**: https://github.com/maniospas/FedMed .
+| **Repository**: https://github.com/maniospas/FedMed
 
 
 .. toctree::

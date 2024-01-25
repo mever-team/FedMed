@@ -15,7 +15,7 @@ with open("requirements.txt", "r") as file:
 
 setuptools.setup(
     name='FedMed',
-    version='0.3.0',
+    version='0.3.1',
     author="Emmanouil (Manios) Krasanakis",
     author_email="maniospas@hotmail.com",
     description="A privacy-aware federated computing library to let "
