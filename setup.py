@@ -3,7 +3,7 @@ import setuptools
 # Developer self-reminder for uploading in pypi:
 # - install: wheel, twine
 # - build  : python setup.py bdist_wheel
-# - deploy : twine upload --repository fedmed dist/*
+# - deploy : twine upload dist/*
 # https://kynan.github.io/blog/2020/05/23/how-to-upload-your-package-to-the-python-package-index-pypi-test-server
 
 

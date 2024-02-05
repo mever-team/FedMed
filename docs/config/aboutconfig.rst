@@ -1,18 +1,18 @@
 The configuration file
 ----------------------
 
-Every server and client uses its own configuration file
-that determines how its operations are carried out.
-These files are structured in a way that lets you share
-the same one across servers and clients to simplify
-agreed upon deployment. However, this is not always necessary.
+Every server and client uses their own configuration file
+that determines how operations are carried out.
+Configuration files are structured in a way that lets you share
+the same ones across servers and clients to simplify
+agreed upon deployment. This is not always necessary, though.
 For example, each server owner may customize which
 privacy policies are applied on their data.
 
 Configuration is written in
 `yaml <https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html>`_.
 In general, there are two top-level
-bocks: `privacy` to :doc:`declare privacy policies <privacy>` used by servers
+blocks: `privacy` to :doc:`declare privacy policies <privacy>` used by servers
 to declare a list of privacy policies sequentially applied on map operation outcomes,
 and `methods` to
 :doc:`declare map-reduce operations <mapreduce>` supported by servers and clients.

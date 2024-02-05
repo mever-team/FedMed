@@ -15,11 +15,12 @@ barring small errors induced from maintaining
 :doc:`security <privacy>`.
 
 Map-reduce operations are declared under the `methods`
-segment of your configuration and differs between
-clients and servers; clients declare the reduce function
+segment of your configuration.
+Clients and servers look at different sub-options;
+clients declare the reduce function
 to be applied on public data, whereas servers declare
 the map function to run on their local private data.
-The methods are referenced from their importable path.
+The methods are referenced through their import path.
 You can create one common configuration file to share
 between clients and servers, where each one reads
 the appropriate (`map` or `reduce`) property. This
@@ -131,3 +132,7 @@ operators.
         map: fedmed.ops.private.sum
       len:
         map: fedmed.ops.private.num
+
+More information on the privacy policies declared
+at the beginning of this example
+can be found :doc:`here <privacy>`.
