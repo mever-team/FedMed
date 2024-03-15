@@ -14,20 +14,20 @@ with open("requirements.txt", "r") as file:
     requirements = file.read().splitlines()
 
 setuptools.setup(
-    name='FedMed',
-    version='0.3.1',
+    name="FedMed",
+    version="0.3.1",
     author="Emmanouil (Manios) Krasanakis",
     author_email="maniospas@hotmail.com",
     description="A privacy-aware federated computing library to let "
-                "non-trusted clients perform statistical analysis.",
+    "non-trusted clients perform statistical analysis.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/maniospas/FedMed",
     packages=setuptools.find_packages(),
     classifiers=[
-         "Programming Language :: Python :: 3",
-         "License :: OSI Approved :: Apache Software License",
-         "Operating System :: OS Independent",
-     ],
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: Apache Software License",
+        "Operating System :: OS Independent",
+    ],
     install_requires=requirements,
- )
+)

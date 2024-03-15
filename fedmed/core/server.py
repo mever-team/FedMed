@@ -17,7 +17,7 @@ class Server:
             return [key, '<span class="badge bg-info text-dark">Raw</span>']
         fragment = key.split(".", 1)[0]
         request = key
-        return [fragment, request]#.replace("_", "")]
+        return [fragment, request]  # .replace("_", "")]
 
     def desc(self, value):
         if isinstance(value, list) or isinstance(value, dict):
@@ -66,8 +66,8 @@ class Server:
                 operations=len(self.config["methods"]),
                 policies=len(self.policy.policies),
                 percmemory=int(100 * mem.used / mem.total),
-                memory=int(mem.used/1024/1024/1024),
-                maxmemory=int(mem.total/1024/1024/1024),
+                memory=int(mem.used / 1024 / 1024 / 1024),
+                maxmemory=int(mem.total / 1024 / 1024 / 1024),
             )
             self.memory_lock.release()
             return ret
@@ -148,9 +148,7 @@ class Server:
                     fragment2 = kwargs["other"]
                     subpoint2_alias = fragment2
                 if not subpoint:
-                    new_name = (
-                        f"{fragment}.{method}({subpoint2_alias})"
-                    )
+                    new_name = f"{fragment}.{method}({subpoint2_alias})"
                 else:
                     new_name = (
                         f"{fragment}.{method}({'.'.join(subpoint)}, {subpoint2_alias})"
@@ -169,9 +167,7 @@ class Server:
                     return jsonify(str(e)), 400
                 return jsonify(new_name), 200
             self.memory_lock.acquire()
-            new_name = (
-                f"{fragment}.{method}({'.'.join(subpoint)})"
-            )
+            new_name = f"{fragment}.{method}({'.'.join(subpoint)})"
             fragment = self.fragments[fragment]
             method = self.config["methods"][method]["map"]
             package, method = method.rsplit(".", 1)
@@ -193,7 +189,7 @@ class Server:
         self.manual_request = manual_request
 
     def __setitem__(self, key, value):
-        assert key!="self", "Fragment name should not be 'self' '.'."
+        assert key != "self", "Fragment name should not be 'self' '.'."
         assert "." not in key, "Fragment name should not contain '.'."
         assert "(" not in key, "Fragment name should not contain '('."
         assert ")" not in key, "Fragment name should not contain ')'."

@@ -17,8 +17,8 @@ class Test:
             t = abs(t)
         elif self.mode == "less":
             t = -t
-        p = scipy.stats.t.cdf(-t, df) * (1+int(self.mode == "two-tailed"))
-        return 1-p if self.alpha is None else (1-p > self.alpha)
+        p = scipy.stats.t.cdf(-t, df) * (1 + int(self.mode == "two-tailed"))
+        return 1 - p if self.alpha is None else (1 - p > self.alpha)
 
 
 class Welch:
@@ -34,7 +34,7 @@ class Welch:
         denom = (var1 / n1) ** 2 / (n1 - 1) + (var2 / n2) ** 2 / (n2 - 1)
         df = num / denom
         # compute t
-        t = (mean1 - mean2) / (var1 / n1 + var2 / n2)**0.5
+        t = (mean1 - mean2) / (var1 / n1 + var2 / n2) ** 0.5
         return t, df
 
 
@@ -50,5 +50,5 @@ class Student(Test):
         df = n1 + n2 - 2
         # compute t
         pooled_var = ((n1 - 1) * var1 + (n2 - 1) * var2) / df
-        t = (mean1 - mean2) / (pooled_var * (1/n1 + 1/n2))**0.5
+        t = (mean1 - mean2) / (pooled_var * (1 / n1 + 1 / n2)) ** 0.5
         return t, df

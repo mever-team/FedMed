@@ -18,14 +18,26 @@ class Anonymity:
         return None
 
     def name(self):
-        if '\n'.join(self.condition) == '*':
+        if "\n".join(self.condition) == "*":
             cond = ""
         else:
-            cond = " on:<br>&emsp;<i>"+"<br>&emsp;".join(self.condition).replace("*", '<span style="color: blue;">&lowast;</span>')+'</i>'
+            cond = (
+                " on:<br>&emsp;<i>"
+                + "<br>&emsp;".join(self.condition).replace(
+                    "*", '<span style="color: blue;">&lowast;</span>'
+                )
+                + "</i>"
+            )
         for reject in self.reject:
-            cond += "<br>&emsp;<b style=\"color:red\";>ignore</b>&nbsp;&nbsp;<i>" + reject.replace("*",
-                                                                                                   '<span style="color: blue;">&lowast;</span>') + '</i>'
-        return f'<span class="badge bg-success text-light" style="width:30px">{self.k}</span> Anonymity'+cond
+            cond += (
+                '<br>&emsp;<b style="color:red";>ignore</b>&nbsp;&nbsp;<i>'
+                + reject.replace("*", '<span style="color: blue;">&lowast;</span>')
+                + "</i>"
+            )
+        return (
+            f'<span class="badge bg-success text-light" style="width:30px">{self.k}</span> Anonymity'
+            + cond
+        )
 
     def description(self):
         return (

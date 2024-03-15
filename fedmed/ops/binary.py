@@ -13,12 +13,13 @@ def operator(method):
 
 @operator
 def pow(a, b):
-    return a ** b
+    return a**b
 
 
 @operator
 def add(a, b):
     return a + b
+
 
 @operator
 def mul(a, b):

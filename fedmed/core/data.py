@@ -62,16 +62,16 @@ class FedData:
     def __pow__(self, other):
         if isinstance(other, FedData):
             return FedData(
-                [device ** o for device, o in zip(self.devices, other.devices)]
+                [device**o for device, o in zip(self.devices, other.devices)]
             )
-        return FedData([device ** other for device in self.devices], self.config)
+        return FedData([device**other for device in self.devices], self.config)
 
     def __rpow__(self, other):
         if isinstance(other, FedData):
             return FedData(
-                [o ** device for device, o in zip(self.devices, other.devices)]
+                [o**device for device, o in zip(self.devices, other.devices)]
             )
-        return FedData([other ** device for device in self.devices], self.config)
+        return FedData([other**device for device in self.devices], self.config)
 
     def __eq__(self, other):
         if isinstance(other, FedData):

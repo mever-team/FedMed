@@ -10,14 +10,26 @@ class Coarsening:
         self.reject = kwargs.get("reject", [])
 
     def name(self):
-        if '\n'.join(self.condition) == '*':
+        if "\n".join(self.condition) == "*":
             cond = ""
         else:
-            cond = " on:<br>&emsp;<i>"+"<br>&emsp;".join(self.condition).replace("*", '<span style="color: blue;">&lowast;</span>')+'</i>'
+            cond = (
+                " on:<br>&emsp;<i>"
+                + "<br>&emsp;".join(self.condition).replace(
+                    "*", '<span style="color: blue;">&lowast;</span>'
+                )
+                + "</i>"
+            )
         for reject in self.reject:
-            cond += "<br>&emsp;<b style=\"color:red\";>ignore</b>&nbsp;&nbsp;<i>" + reject.replace("*",
-                                                                                                   '<span style="color: blue;">&lowast;</span>') + '</i>'
-        return f'<span class="badge bg-secondary text-light">{self.value}</span> Precision for {self.type}s' + cond
+            cond += (
+                '<br>&emsp;<b style="color:red";>ignore</b>&nbsp;&nbsp;<i>'
+                + reject.replace("*", '<span style="color: blue;">&lowast;</span>')
+                + "</i>"
+            )
+        return (
+            f'<span class="badge bg-secondary text-light">{self.value}</span> Precision for {self.type}s'
+            + cond
+        )
 
     def description(self):
         return (
@@ -37,7 +49,10 @@ class Coarsening:
         return None
 
     def bins(self, results):
-        return [(self.postprocess(value), self.postprocess(count)) for value, count in results]
+        return [
+            (self.postprocess(value), self.postprocess(count))
+            for value, count in results
+        ]
 
     def preprocess(self, entries):
         return entries
