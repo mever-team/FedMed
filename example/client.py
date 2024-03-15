@@ -7,7 +7,7 @@ sources = [
 
 ]
 data = fm.FedData(config="config.yaml").register([fm.Remote(ip="http://127.0.0.1:8000", fragment="test")])
-#print(fm.stats.test.Student().reject(data["first"], data["second"]))
+print(fm.stats.test.Student().reject(data["first"], data["second"]))
 
 
 print(sum(data["first"]**2+1))

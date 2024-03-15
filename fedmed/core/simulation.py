@@ -33,7 +33,7 @@ class Simulation:
         method = name
         payload = {
             "subpoint": self.subpoint,
-            "kwargs": {"other": [other.fragment] if isinstance(other, Simulation) else other},
+            "kwargs": {"other": [other.fragment]+other.subpoint if isinstance(other, Simulation) else other},
         }
         #print(method, self.fragment, payload)
         payload = self.communication.send(payload)

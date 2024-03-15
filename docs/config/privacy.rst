@@ -3,7 +3,7 @@ Privacy policies
 
 Privacy policies are declared within
 :doc:`server configuration files <mapreduce>`
-to control the information is exposed to clients.
+to control how much information is exposed to clients.
 Vectorized operations are not exposed, and map-reduce
 ones already expose only aggregate quantities to
 external clients. However, it may still be important
@@ -33,12 +33,12 @@ values are computed across at least k data samples.
           filter: ["*"] # optional (this default is to apply on all fragments)
           reject: []    # optional (this default is to reject nothing)
 
-.. info:: This segment is under construction.
+.. note:: This segment is under construction.
 
 Workload cap
 ------------
 
-.. info:: This segment is under construction.
+.. note:: This segment is under construction.
 
 
 How to implement a new policy

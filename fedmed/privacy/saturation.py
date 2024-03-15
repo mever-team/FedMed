@@ -39,7 +39,7 @@ class Saturation:
         return None
 
     def bins(self, results):
-        return [(value, self.postprocess(count)) for value, count in results]
+        return [(self.postprocess(value), self.postprocess(count)) for value, count in results]
 
     def preprocess(self, entries):
         return entries
