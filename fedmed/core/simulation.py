@@ -28,6 +28,9 @@ class Simulation:
             SimulatedCommunication() if communication is None else communication
         )
 
+    def __str__(self):
+        return f"Simulated connection to data fragment: {'.'.join([self.fragment]+self.subpoint)}"
+
     def __getitem__(self, item):
         return Simulation(
             self.server,

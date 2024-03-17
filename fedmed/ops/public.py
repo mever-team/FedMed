@@ -28,6 +28,15 @@ def max(entries):
         if val > ret:
             ret = val
     return ret
+@reductor
+def max(entries):
+    if len(entries) <= 0:
+        return None
+    ret = entries[0]
+    for val in entries:
+        if val > ret:
+            ret = val
+    return ret
 
 
 @reductor
@@ -36,7 +45,7 @@ def min(entries):
         return None
     ret = entries[0]
     for val in entries:
-        if val > ret:
+        if val < ret:
             ret = val
     return ret
 

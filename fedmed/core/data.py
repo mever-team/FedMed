@@ -14,6 +14,9 @@ class FedData:
         if devices is not None:
             self.register(devices)
 
+    def __str__(self):
+        return f"FedData ({len(self.devices)} devices)" + "".join("\n\t"+str(device) for device in self.devices)
+
     def __getitem__(self, item):
         return FedData([device[item] for device in self.devices], self.config)
 
@@ -138,12 +141,18 @@ class FedData:
         if isinstance(request, str):
             request = (request, {})
         method, kwargs = request
-        method = self.config["methods"][method]["reduce"]
-        package, method = method.rsplit(".", 1)
-        importlib.__import__(package)
-        method = getattr(sys.modules[package], method)
-        results = [device.run(request) for device in self.devices]
-        return method(results)
+        if not isinstance(self.config["methods"][method], str):
+            method = self.config["methods"][method]["reduce"]
+            package, method = method.rsplit(".", 1)
+            importlib.__import__(package)
+            method = getattr(sys.modules[package], method)
+            results = [device.run(request) for device in self.devices]
+            return method(results)
+        else:
+            return FedData(
+                [device.operator(method, None) for device in self.devices], self.config
+            )
+
 
     def __getattr__(self, item):
         if item in ["run", "devices", "config", "register", "operator"]:

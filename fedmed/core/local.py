@@ -22,6 +22,9 @@ class Local:
             self.config = config
         self.policy = Trustful()
 
+    def __str__(self):
+        return f"Local fast data: {self.data}"
+
     def __getitem__(self, item):
         return Local(self.data[item], self.config)
 

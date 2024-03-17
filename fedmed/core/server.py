@@ -168,8 +168,11 @@ class Server:
                 return jsonify(new_name), 200
             self.memory_lock.acquire()
             new_name = f"{fragment}.{method}({'.'.join(subpoint)})"
+            #print(self.fragments.keys())
             fragment = self.fragments[fragment]
-            method = self.config["methods"][method]["map"]
+            method = self.config["methods"][method]
+            if not isinstance(method, str):
+                method = method["map"]
             package, method = method.rsplit(".", 1)
             importlib.__import__(package)
             method = getattr(sys.modules[package], method)

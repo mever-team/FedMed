@@ -63,3 +63,10 @@ def ge(a, b):
 
 def abs(a, _):
     return [ae if ae > 0 else -ae for ae in a]
+
+
+def round(a, precision):
+    if precision is None:
+        return [int(ae+0.5) for ae in a]
+    else:
+        return [int(ae/precision+0.5)*precision for ae in a]

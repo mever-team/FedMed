@@ -36,7 +36,7 @@ privacy:
       limit: 30
   - policy: fedmed.privacy.ComplexityCap
     params:
-      cap: 3
+      cap: 5
 
 methods:
   __mul__: fedmed.ops.binary.mul
@@ -50,6 +50,7 @@ methods:
   __gt__: fedmed.ops.binary.gt
   __ge__: fedmed.ops.binary.ge
   __abs__: fedmed.ops.binary.abs
+  round: fedmed.ops.binary.round
   max:
     map: fedmed.ops.private.max
     reduce: fedmed.ops.public.max

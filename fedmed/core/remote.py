@@ -8,6 +8,9 @@ class Remote:
         self.fragment = fragment
         self.subpoint = list() if subpoint is None else subpoint
 
+    def __str__(self):
+        return f"Connection at {self.ip} to data fragment: {'.'.join([self.fragment]+self.subpoint)}"
+
     def __getitem__(self, item):
         return Remote(self.ip, self.fragment, self.subpoint + [item])
 
