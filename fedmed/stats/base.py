@@ -44,24 +44,24 @@ def distribution(data: FedData, discrete: Optional[float]):
     offset = {}
     for element in set(rounded):
         if discrete is not None:
-            element = int(element/discrete+0.5)*discrete
+            element = int(element / discrete + 0.5) * discrete
         filter = rounded == element
         count = sum(filter)
         if count > 0:
             if discrete is not None:
-                key = sum(filter*data) / count  # place histogram on the center
-                offset[key] = element-key
+                key = sum(filter * data) / count  # place histogram on the center
+                offset[key] = element - key
             else:
                 key = element
-            #assert key not in distr
-            distr[key] = distr.get(key, 0)+count
+            # assert key not in distr
+            distr[key] = distr.get(key, 0) + count
     return distr, offset
 
 
 def hist(data: FedData, bins: Optional[int] = 50, _info=False):
     mx = None if bins is None else max(abs(data))
     mn = None if bins is None else min(abs(data))
-    discrete = None if bins is None else (mx-mn) / bins
+    discrete = None if bins is None else (mx - mn) / bins
     if _info:
         return *distribution(data, discrete), discrete
     return distribution(data, discrete)[0]
@@ -73,23 +73,23 @@ def reconstruct(d, bins=50):
         ret = [k for k, v in distr.items() for _ in range(v)]
     else:
         width *= 2
-        #ret = [k+width*(i/(v-1)-0.5) for k, v in distr.items() for i in range(v) if v>1]
+        # ret = [k+width*(i/(v-1)-0.5) for k, v in distr.items() for i in range(v) if v>1]
         ret = list()
         for k, v in distr.items():
             if v % 2 == 1:
                 ret.append(k)
-                v = v-1
-            halfv = v//2
+                v = v - 1
+            halfv = v // 2
             for i in range(halfv):
-                wid = width-abs(offset[k])
-                ret.append(k+wid-wid*i/halfv)
-                ret.append(k-wid+wid*i/halfv)
+                wid = width - abs(offset[k])
+                ret.append(k + wid - wid * i / halfv)
+                ret.append(k - wid + wid * i / halfv)
     return ret
 
 
 def wilcoxon(d1, d2, bins=50, **kwargs):
-    r = reconstruct(d1-d2, bins=bins)
-    #from matplotlib import pyplot as plt
-    #plt.hist(r)
-    #plt.show()
+    r = reconstruct(d1 - d2, bins=bins)
+    # from matplotlib import pyplot as plt
+    # plt.hist(r)
+    # plt.show()
     return scipy.stats.wilcoxon(r, **kwargs)

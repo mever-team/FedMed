@@ -67,6 +67,6 @@ def abs(a, _):
 
 def round(a, precision):
     if precision is None:
-        return [int(ae+0.5) for ae in a]
+        return [int(ae + 0.5) for ae in a]
     else:
-        return [int(ae/precision+0.5)*precision for ae in a]
+        return [int(ae / precision + 0.5) * precision for ae in a]

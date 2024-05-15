@@ -15,7 +15,9 @@ class FedData:
             self.register(devices)
 
     def __str__(self):
-        return f"FedData ({len(self.devices)} devices)" + "".join("\n\t"+str(device) for device in self.devices)
+        return f"FedData ({len(self.devices)} devices)" + "".join(
+            "\n\t" + str(device) for device in self.devices
+        )
 
     def __getitem__(self, item):
         return FedData([device[item] for device in self.devices], self.config)
@@ -152,7 +154,6 @@ class FedData:
             return FedData(
                 [device.operator(method, None) for device in self.devices], self.config
             )
-
 
     def __getattr__(self, item):
         if item in ["run", "devices", "config", "register", "operator"]:

@@ -27,9 +27,9 @@ def unique(entries, policy):
 
 @privatize
 def distribution(entries, policy):
-    #numbins = 10
-    #width = (max(entries, None)-min(entries, None)) / numbins
-    #entries = []
+    # numbins = 10
+    # width = (max(entries, None)-min(entries, None)) / numbins
+    # entries = []
     pass
 
 

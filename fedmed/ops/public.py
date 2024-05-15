@@ -28,6 +28,8 @@ def max(entries):
         if val > ret:
             ret = val
     return ret
+
+
 @reductor
 def max(entries):
     if len(entries) <= 0:

@@ -168,7 +168,7 @@ class Server:
                 return jsonify(new_name), 200
             self.memory_lock.acquire()
             new_name = f"{fragment}.{method}({'.'.join(subpoint)})"
-            #print(self.fragments.keys())
+            # print(self.fragments.keys())
             fragment = self.fragments[fragment]
             method = self.config["methods"][method]
             if not isinstance(method, str):
