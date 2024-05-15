@@ -1,8 +1,6 @@
 from fedmed.core import FedData, RemoteRunnable
 from typing import Optional
 import scipy
-from random import random
-import numpy as np
 
 
 _min = min
