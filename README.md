@@ -7,7 +7,7 @@ to let non-trusted clients
 perform statistical analysis. Process data
 scattered across multiple servers, each with
 its own privacy policy. Merge these remote data 
-and local (or simulated) sources.
+with local (or simulated) sources.
 
 **Author:** Emmanouil (Manios) Krasanakis<br>
 **Contact:** maniospas@hotmail.com<br>
@@ -22,17 +22,16 @@ Install FedMed with:
 pip install fedmed
 ```
 
-
 Data servers host your data for clients to use.
-Custom map operations of the map-reduce scheme
-are specified in the configuration file. Sometimes,
-you will have the same configuration for your servers
-and the client that uses them. Otherwise,
-find a first default
-in the `example/` folder, and replace the paths to
-implementations with your own. Also remove any 
-operations you do not want to support for privacy
-reasons.
+Available map-reduce operations
+are specified in a configuration file. 
+Find a first default in the `example/` folder.
+You can reuse
+the same configuration between servers
+and clients, but this is not mandatory.
+For example, some servers may remove
+some operations from the configuration,
+or add more privacy policies.
 
 ```python
 import fedmed as fm
@@ -45,7 +44,7 @@ server = fm.Server(config="config.yaml")
 Each server can contain fragments of several datasets.
 Load data as pandas dataframes or combinations
 of lists and dicts, and set them as fragments
-like below.
+like so:
 
 ```python
 data = [1, 2, 3]  # or dict of lists, pandas dataframe, etc
@@ -64,7 +63,9 @@ if __name__ == "__main__":
 ```
 
 :globe_with_meridians: Set up a reverse proxy server to restrict
-who can perform operations on your system.
+who can perform operations on your system. Even the best 
+privacy policies fail against repeated attacks from malicious
+actors.
 
 ---
 
@@ -80,10 +81,10 @@ pip install fedmed
 ```
 
 Set up communication channels with remote
-data fragments (i.e., parts of the same dataset)
-and organize them into one dataset. Datasets 
-are allowed to only partially match in terms of
-structure and operations.
+data fragments and organize them into one dataset. 
+Fragments may only partially match in terms of
+structure and operations - they only need to support
+the particular analysis you are performing.
 
 ```python
 import fedmed as fm
@@ -104,9 +105,8 @@ capabilities, in which case some computations will fail.
 
 Operations are performed under a map-reduce scheme.
 The map is performed in the servers, and the reduce
-on the client. Each server is left in control of both
-how it performs its namesake map methods, and how it 
-distorts outcomes to comply with some privacy policy. 
+on the client. For example, run the following code
+after setting up some devices at the respective ip addresses:
 
 ```python
 from fedmed.stats import sum, len
@@ -114,17 +114,71 @@ mean = sum(data) / len(data)
 print('Mean', mean)
 ```
 
-:lock: Control of map operations allows server owners 
-to set their own privacy policies. For example, 
-they may share new internal data compared to 
-old ones only when enough new samples are gathered
-(in the interim, outcomes on older versions of the
-dataset will be exposed).
-
-For the above code to run, you need to set up
-some devices to run at the respective ip addresses.
+:lock: Server owners are left in control of both
+how it performs its namesake map methods, and how it 
+distorts outcomes to comply with its privacy policies.
 
 ---
+
+</details>
+
+
+
+<details>
+<summary><b>Example simulation</b></summary>
+
+Install FedMed with:
+
+```
+pip install fedmed
+```
+
+Set up one or more server instances like above to
+host some data fragments, but don't actually run them:
+
+```python
+import fedmed as fm
+from random import random, seed
+
+seed(5)
+serverA = fm.Server(config="config.yaml")
+serverA["fragment"] = {
+    "Treatment1": [random() for _ in range(1000)],
+    "Treatment2": [random()**2+0.22 for _ in range(1000)],
+}
+serverB = fm.Server(config="config.yaml")
+serverB["fragment"] = {
+    "Treatment1": [random() for _ in range(300)],
+    "Treatment2": [random()**2+0.25 for _ in range(300)],
+}
+```
+
+Now switch to writting client code. Use the above servers
+to declare simulation data fragments:
+
+```python
+data = fm.FedData([
+    fm.Simulation(server=serverA, fragment="fragment"),
+    fm.Simulation(server=serverB, fragment="fragment")
+])
+```
+
+Perform any fedmed operations you would like. 
+For example, if the privacy policy is lax enough, you can even
+perform non-parametric tests and reconstruct 
+an estimation of the data distribution (not the actual data):
+
+```python
+treat1 = data["Treatment1"]
+treat2 = data["Treatment2"]
+
+print(fm.stats.base.wilcoxon(treat1, treat2))
+
+distr = fm.stats.base.reconstruct(treat1-treat2)  # synthetic estimation based on privacy-aware operations
+from matplotlib import pyplot as plt
+plt.hist(distr)
+plt.show()
+```
 
 </details>
 

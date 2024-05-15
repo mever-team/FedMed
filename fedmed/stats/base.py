@@ -1,5 +1,9 @@
 from fedmed.core import FedData, RemoteRunnable
 from typing import Optional
+import scipy
+from random import random
+import numpy as np
+
 
 _min = min
 _max = max
@@ -37,26 +41,55 @@ def pearson(d1: FedData, d2: FedData):
 def distribution(data: FedData, discrete: Optional[float]):
     distr = {}
     rounded = data if discrete is None else round(data, discrete)
+    offset = {}
     for element in set(rounded):
         if discrete is not None:
             element = int(element/discrete+0.5)*discrete
-        count = sum(rounded==element)
+        filter = rounded == element
+        count = sum(filter)
         if count > 0:
-            distr[element] = distr.get(element, 0)+count
-    return distr
+            if discrete is not None:
+                key = sum(filter*data) / count  # place histogram on the center
+                offset[key] = element-key
+            else:
+                key = element
+            #assert key not in distr
+            distr[key] = distr.get(key, 0)+count
+    return distr, offset
 
 
-def hist(data: FedData, bins: Optional[int] = 20):
-    discrete = None if bins is None else (max(abs(data)) - min(abs(data))) / bins
-    print("decr" , discrete)
-    return distribution(data, discrete)
+def hist(data: FedData, bins: Optional[int] = 50, _info=False):
+    mx = None if bins is None else max(abs(data))
+    mn = None if bins is None else min(abs(data))
+    discrete = None if bins is None else (mx-mn) / bins
+    if _info:
+        return *distribution(data, discrete), discrete
+    return distribution(data, discrete)[0]
 
 
-def wilcoxon(d1, d2, bins=20):
-    d = abs(d1-d2)
-    distr = hist(d, bins)
-    print("distr", distr)
-    def count_smaller(x, d):
-        return _sum(v for k, v in d.items() if k < x)
-    d = _sum(count_smaller(k, d)*v for k, v in distr.items())
-    return d
+def reconstruct(d, bins=50):
+    distr, offset, width = hist(d, bins, _info=True)
+    if width is None:
+        ret = [k for k, v in distr.items() for _ in range(v)]
+    else:
+        width *= 2
+        #ret = [k+width*(i/(v-1)-0.5) for k, v in distr.items() for i in range(v) if v>1]
+        ret = list()
+        for k, v in distr.items():
+            if v % 2 == 1:
+                ret.append(k)
+                v = v-1
+            halfv = v//2
+            for i in range(halfv):
+                wid = width-abs(offset[k])
+                ret.append(k+wid-wid*i/halfv)
+                ret.append(k-wid+wid*i/halfv)
+    return ret
+
+
+def wilcoxon(d1, d2, bins=50, **kwargs):
+    r = reconstruct(d1-d2, bins=bins)
+    #from matplotlib import pyplot as plt
+    #plt.hist(r)
+    #plt.show()
+    return scipy.stats.wilcoxon(r, **kwargs)

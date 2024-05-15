@@ -2,16 +2,46 @@ privacy:
   - policy: fedmed.privacy.Anonymity
     params:
       k: 2
+  - policy: fedmed.privacy.Noise
+    params:
+      value: 1
+      type: int
+      filter:
+        - "*.len()"
+  - policy: fedmed.privacy.Noise
+    params:
+      value: 4
+      type: int
+      reject:
+        - "*.len()"
+  - policy: fedmed.privacy.Saturation
+    params:
+      min: 0
+      filter:
+        - "*.len()"
+  - policy: fedmed.privacy.Noise
+    params:
+      value: 0.0002
+      type: float
+  - policy: fedmed.privacy.Coarsening
+    params:
+      value: 2
+      type: int
+  - policy: fedmed.privacy.Coarsening
+    params:
+      value: 0.0001
+      type: float
   - policy: fedmed.privacy.CacheLimit
     params:
-      limit: 30
+      limit: 100
   - policy: fedmed.privacy.ComplexityCap
     params:
-      cap: 3
+      cap: 8
 
 methods:
   __mul__: fedmed.ops.binary.mul
   __pow__: fedmed.ops.binary.pow
+  __rpow__: fedmed.ops.binary.pow
   __add__: fedmed.ops.binary.add
   __sub__: fedmed.ops.binary.sub
   __eq__: fedmed.ops.binary.eq
@@ -21,6 +51,7 @@ methods:
   __gt__: fedmed.ops.binary.gt
   __ge__: fedmed.ops.binary.ge
   __abs__: fedmed.ops.binary.abs
+  round: fedmed.ops.binary.round
   max:
     map: fedmed.ops.private.max
     reduce: fedmed.ops.public.max

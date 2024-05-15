@@ -1,34 +1,29 @@
 import fedmed as fm
-import numpy as np
-from random import random
+from random import random, seed
 
-server = fm.Server(config="config.yaml")
-server["treatmentA"] = {
-    "Gender": ["Man", "Woman", "Woman", "Man", "Man", "Man", "Woman"] * 100,
-    "Receptive": [random() for _ in range(700)],
+seed(5)
+serverA = fm.Server(config="config.yaml")
+serverA["fragment"] = {
+    "Treatment1": [random() for _ in range(1000)],
+    "Treatment2": [random()**2+0.22 for _ in range(1000)],
+}
+serverB = fm.Server(config="config.yaml")
+serverB["fragment"] = {
+    "Treatment1": [random() for _ in range(300)],
+    "Treatment2": [random()**2+0.25 for _ in range(300)],
 }
 
-data = fm.FedData(
-    [
-        fm.Simulation(server=server, fragment="treatmentA"),
-    ]
-)
+data = fm.FedData([
+    fm.Simulation(server=serverA, fragment="fragment"),
+    fm.Simulation(server=serverB, fragment="fragment")
+])
 
-_sum = sum
-from fedmed.stats import base
+treat1 = data["Treatment1"]
+treat2 = data["Treatment2"]
 
+print(fm.stats.base.wilcoxon(treat1, treat2))
 
-d1 = data["Gender"] == "Man"
-d2 = data["Receptive"]
-
-distr = base.hist(d2)
-print(base.hist(data["Gender"], bins=None))
-print(sum(element*value for element, value in distr.items()))
-print(base.sum(d2))
-
-#from matplotlib import pyplot as plt
-#plt.bar(list(distr.keys()), list(distr.values()))
-#plt.show()
-
-print("Pearson correlation", base.pearson(d1, d2))
-print(base.wilcoxon(d2, d2-1))
+distr = fm.stats.base.reconstruct(treat1-treat2)  # synthetic estimation based on privacy-aware operations
+from matplotlib import pyplot as plt
+plt.hist(distr)
+plt.show()
