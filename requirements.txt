@@ -4,3 +4,5 @@ flask
 waitress
 matplotlib
 psutil
+requests
+scipy

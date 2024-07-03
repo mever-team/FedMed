@@ -85,9 +85,6 @@ def reconstruct(d, bins=50):
     return ret
 
 
-def wilcoxon(d1, d2, bins=50, **kwargs):
+def wilcoxon(d1: FedData, d2: FedData, bins: int = 50, **kwargs):
     r = reconstruct(d1 - d2, bins=bins)
-    # from matplotlib import pyplot as plt
-    # plt.hist(r)
-    # plt.show()
     return scipy.stats.wilcoxon(r, **kwargs)

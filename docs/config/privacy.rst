@@ -4,22 +4,22 @@ Privacy policies
 Privacy policies are declared within
 :doc:`server configuration files <mapreduce>`
 to control how much information is exposed to clients.
-Vectorized operations are not exposed, and map-reduce
-ones already expose only aggregate quantities to
+Keep in mind that the outcomes of vectorized operations
+(that is, operations between columns, like additions)
+are not exposed at all. Whereas map-reduce
+operations already expose only aggregate quantities to
 external clients. However, it may still be important
-to add more degrees of anonymity, to avoid accidental
+to add more degrees of anonymity to avoid accidental
 information leakage, even under the assumption that
 clients are well-meaning.
 Below we describe commonly available privacy policies,
 although you can also write your own.
 
-
-
 Data security
 -------------
 
 This describes available privacy policies and how to declare them
-inside the configuration file. These policies are im
+inside the configuration file. These policies are important to ensure that sensitive information is handled correctly and that the privacy of individuals is maintained.
 
 **k-Anonymity** Ensures that any computations that return non-None
 values are computed across at least k data samples.
@@ -33,33 +33,73 @@ values are computed across at least k data samples.
           filter: ["*"] # optional (this default is to apply on all fragments)
           reject: []    # optional (this default is to reject nothing)
 
-.. note:: This segment is under construction.
+**Noise Addition** Adds random noise to reduce operation *outcomes* to obscure individual values. The amount of noise should depend on differential privacy needs.
 
-Workload cap
-------------
+.. code-block:: yaml
 
-.. note:: This segment is under construction.
+    privacy:
+      - policy: fedmed.privacy.Noise
+        params:
+          value: 0.01
+          type: float
+          filter: ["*"]
+          reject: []
+
+**Coarsening** Reduces the precision of numerical values to a specified level. This is especially needed when noise is added.
+
+.. code-block:: yaml
+
+    privacy:
+      - policy: fedmed.privacy.Coarsening
+        params:
+          value: 0.1
+          type: float
+          filter: ["*"]
+          reject: []
+
+**Saturation** Limits the outcomes of reduce operations to within a specified range.
+
+.. code-block:: yaml
+
+    privacy:
+      - policy: fedmed.privacy.Saturation
+        params:
+          min: 0
+          max: 100
+          type: int
+          filter: ["*"]
+          reject: []
 
 
-How to implement a new policy
------------------------------
+Workload limits
+---------------
 
-To implement a new policy, fill the following prototype.
-In this, the name can include boostrap html elements to
-show in the server console. The most important methods
-for most policies are `postprocess` and `bins`, which
-transform returned data. You can create more methods to
-your policies to tie to new types of privacy concerns
-called by map operations. The current concerns found
-below match the computational model of operations in
-`fedmed.ops.private`.
+**Cache Limit** Restricts the number of cached computations to protect server memory.
 
-The `on` method checks whether it
-can be applied on a specific fragment (refer to the
-default provided implementation that checks this based
-on a condition filter and a rejection condition) and may
-return either the policy itself, a new one, or `None`
-if it does not create any downstream consideration.
+.. code-block:: yaml
+
+    privacy:
+      - policy: fedmed.privacy.CacheLimit
+        params:
+          limit: 100
+          filter: ["*"]
+          reject: []
+
+**Complexity Cap** Limits the number of dependent operations to prevent overly complex computations. Basically, this is one more than the maximum allowed depth of the abstract syntax tree of vectorized operations.
+
+.. code-block:: yaml
+
+    privacy:
+      - policy: fedmed.privacy.ComplexityCap
+        params:
+          cap: 10
+          filter: ["*"]
+          reject: []
+
+Custom policies
+---------------
+
+To implement a new policy, follow the prototype below. This example shows how to create a new privacy policy that can be applied to server operations.
 
 .. code-block:: python
 
@@ -111,11 +151,10 @@ if it does not create any downstream consideration.
             # operations on your data.
             pass
 
-
-The above policy can be added to your configuration per
+The above policy can be added to a configuration file per
 the following snippet. Do not forget to also share the policy
 module as a file or installable package
-with anyone that will be reusing this configuration:
+with anyone that will be using the configuration:
 
 .. code-block:: yaml
 
