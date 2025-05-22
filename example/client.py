@@ -13,8 +13,7 @@ data = fm.FedData(config="config.yaml").register(
 print(fm.stats.test.Student().reject(data["first"], data["second"]))
 
 
-print(sum(data["first"] ** 2 + 1))
-# print(sum(data["first"]**2+1))
+print(std(data["second"]))
 
 
 """

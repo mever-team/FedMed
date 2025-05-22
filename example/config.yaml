@@ -1,7 +1,7 @@
 privacy:
   - policy: fedmed.privacy.Anonymity
     params:
-      k: 1
+      k: 2
   - policy: fedmed.privacy.CacheLimit
     params:
       limit: 200

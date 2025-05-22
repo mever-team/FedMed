@@ -5,7 +5,6 @@ The server gets the privacy policy of its map methods from config.yaml.
 
 from fedmed import Server
 from waitress import serve
-import pandas as pd
 
 server = Server(config="config.yaml")
 if __name__ == "__main__":
